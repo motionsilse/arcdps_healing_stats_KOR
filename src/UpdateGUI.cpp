@@ -49,18 +49,18 @@ void Display_UpdateWindow()
 	{
 		bool shown = true;
 		if (ImGui::Begin(
-			"Healing Stats Update###HEALING_STATS_UPDATE",
+			"치유 통계 업데이트###HEALING_STATS_UPDATE",
 			&shown,
 			ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize) == true)
 		{
 			const UpdateChecker::Version& currentVersion = *state->CurrentVersion;
 			const UpdateChecker::Version& newVersion = state->NewVersion;
 
-			ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "A new update for the healing stats addon is available");
-			ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "Current version: %u.%urc%u", currentVersion[0], currentVersion[1], currentVersion[2]);
-			ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "New version: %u.%urc%u", newVersion[0], newVersion[1], newVersion[2]);
+			ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "치유 통계 애드온 새 업데이트가 있습니다");
+			ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "현재 버전: %u.%urc%u", currentVersion[0], currentVersion[1], currentVersion[2]);
+			ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "새 버전: %u.%urc%u", newVersion[0], newVersion[1], newVersion[2]);
 
-			if (ImGui::Button("Open download page") == true)
+			if (ImGui::Button("다운로드 페이지 열기") == true)
 			{
 				ShellExecuteA(nullptr, nullptr, "https://github.com/Krappa322/arcdps_healing_stats/releases", nullptr, nullptr, SW_SHOW);
 			}
@@ -68,19 +68,19 @@ void Display_UpdateWindow()
 			switch (state->UpdateStatus)
 			{
 			case UpdateChecker::Status::UpdateAvailable:
-				if (ImGui::Button("Update automatically") == true)
+				if (ImGui::Button("자동 업데이트") == true)
 				{
 					GlobalObjects::UPDATE_CHECKER->PerformInstallOrUpdate(*state);
 				}
 				break;
 			case UpdateChecker::Status::UpdateInProgress:
-				ImGui::TextUnformatted("Update in progress");
+				ImGui::TextUnformatted("업데이트 중");
 				break;
 			case UpdateChecker::Status::UpdateSuccessful:
-				ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "Update finished, restart Guild Wars 2 for the update to take effect");
+				ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "업데이트 완료. 적용하려면 Guild Wars 2를 다시 시작하세요");
 				break;
 			case UpdateChecker::Status::UpdateError:
-				ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "An error occured while updating");
+				ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "업데이트 중 오류가 발생했습니다");
 				break;
 			default:
 				break;

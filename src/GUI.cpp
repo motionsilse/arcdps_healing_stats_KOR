@@ -19,21 +19,21 @@
 #include <Windows.h>
 
 static constexpr EnumStringArray<AutoUpdateSettingEnum> AUTO_UPDATE_SETTING_ITEMS{
-	"off", "on (only download stable)", "on (download prerelease/stable)"
+	"꺼짐", "켜짐 (안정 버전)", "켜짐 (프리릴리스 포함)"
 };
 static constexpr EnumStringArray<DataSource> DATA_SOURCE_ITEMS{
-	"targets", "skills", "totals", "combined", "peers outgoing"};
+	"대상별", "스킬별", "합계", "통합 보기", "스쿼드원별"};
 static constexpr EnumStringArray<SortOrder> SORT_ORDER_ITEMS{
-	"alphabetical ascending", "alphabetical descending", "total outgoing per second ascending", "total outgoing per second descending", "heal per second ascending", "heal per second descending", "barrier generation per second ascending", "barrier generation per second descending"};
+	"이름순", "이름 역순", "총량/초 낮은순", "총량/초 높은순", "치유/초 낮은순", "치유/초 높은순", "배리어/초 낮은순", "배리어/초 높은순"};
 static constexpr EnumStringArray<CombatEndCondition> COMBAT_END_CONDITION_ITEMS{
-	"combat exit", "last damage event", "last heal event", "last damage / heal event"};
+	"전투 종료", "마지막 피해", "마지막 치유", "마지막 피해/치유"};
 static constexpr EnumStringArray<spdlog::level::level_enum, 7> LOG_LEVEL_ITEMS{
 	"trace", "debug", "info", "warning", "error", "critical", "off"};
 
 static constexpr EnumStringArray<Position, static_cast<size_t>(Position::WindowRelative) + 1> POSITION_ITEMS{
-	"manual", "screen relative", "window relative"};
+	"수동", "화면 기준", "창 기준"};
 static constexpr EnumStringArray<CornerPosition, static_cast<size_t>(CornerPosition::BottomRight) + 1> CORNER_POSITION_ITEMS{
-	"top-left", "top-right", "bottom-left", "bottom-right"};
+	"좌상단", "우상단", "좌하단", "우하단"};
 
 /* Table with mapping between profession and elite specialization pair and their abbreviation and icon resource ID/icon override name.
 *  The resource is loaded at runtime, with the table updated with IconLoader texture unique IDs and a pointer to the texture.
@@ -292,15 +292,15 @@ static void Display_DetailsWindow(HealWindowContext& pContext, DetailsWindowStat
 
 	if (ImGui::BeginPopupContextWindow("Options##HEAL") == true)
 	{
-		ImGui::InputText("entry format", pContext.DetailsEntryFormat, sizeof(pContext.DetailsEntryFormat));
-		ImGuiEx::AddTooltipToLastItem("Format for displayed data (statistics are per entry).\n"
-		                              "{1}: Healing\n"
-		                              "{2}: Hits\n"
-		                              "{3}: Casts (not implemented yet)\n"
-		                              "{4}: Healing per second\n"
-		                              "{5}: Healing per hit\n"
-		                              "{6}: Healing per cast (not implemented yet)\n"
-		                              "{7}: Percent of total healing\n");
+		ImGui::InputText("행 표시 형식", pContext.DetailsEntryFormat, sizeof(pContext.DetailsEntryFormat));
+		ImGuiEx::AddTooltipToLastItem("행에 표시할 값 형식입니다.\n"
+		                              "{1}: 치유량\n"
+		                              "{2}: 틱 수\n"
+		                              "{3}: 시전 수 (미구현)\n"
+		                              "{4}: 치유/초\n"
+		                              "{5}: 치유/틱\n"
+		                              "{6}: 치유/시전 (미구현)\n"
+		                              "{7}: 전체 치유량 비율\n");
 
 		ImGui::EndPopup();
 	}
@@ -321,41 +321,41 @@ static void Display_DetailsWindow(HealWindowContext& pContext, DetailsWindowStat
 	{
 		pState.LastFrameLeftSideMinWidth = (std::max)(
 			pState.LastFrameLeftSideMinWidth,
-			ImGuiEx::DetailsSummaryEntry("total healing", "%llu", adjustedHealing));
+			ImGuiEx::DetailsSummaryEntry("치유량", "%llu", adjustedHealing));
 	}
 
 	if (pState.BarrierGeneration > 0)
 	{
 		pState.LastFrameLeftSideMinWidth = (std::max)(
 			pState.LastFrameLeftSideMinWidth,
-			ImGuiEx::DetailsSummaryEntry("total barrier gen", "%llu", pState.BarrierGeneration));
+			ImGuiEx::DetailsSummaryEntry("배리어량", "%llu", pState.BarrierGeneration));
 	}
 
 	pState.LastFrameLeftSideMinWidth = (std::max)(
 		pState.LastFrameLeftSideMinWidth,
-		ImGuiEx::DetailsSummaryEntry("hits", "%llu", pState.Hits));
+		ImGuiEx::DetailsSummaryEntry("틱 수", "%llu", pState.Hits));
 
 	if (pState.Casts.has_value() == true)
 	{
 		pState.LastFrameLeftSideMinWidth = (std::max)(
 			pState.LastFrameLeftSideMinWidth,
-			ImGuiEx::DetailsSummaryEntry("casts", "%llu", *pState.Casts));
+			ImGuiEx::DetailsSummaryEntry("시전 수", "%llu", *pState.Casts));
 	}
 
 	if (adjustedHealing > 0 || pState.BarrierGeneration == 0)
 	{
 		pState.LastFrameLeftSideMinWidth = (std::max)(
 			pState.LastFrameLeftSideMinWidth,
-			ImGuiEx::DetailsSummaryEntry("healing per second", "%.1f", divide_safe(adjustedHealing, pState.TimeInCombat)));
+			ImGuiEx::DetailsSummaryEntry("치유/초", "%.1f", divide_safe(adjustedHealing, pState.TimeInCombat)));
 		pState.LastFrameLeftSideMinWidth = (std::max)(
 			pState.LastFrameLeftSideMinWidth,
-			ImGuiEx::DetailsSummaryEntry("healing per hit", "%.1f", divide_safe(adjustedHealing, pState.Hits)));
+			ImGuiEx::DetailsSummaryEntry("치유/틱", "%.1f", divide_safe(adjustedHealing, pState.Hits)));
 
 		if (pState.Casts.has_value() == true)
 		{
 			pState.LastFrameLeftSideMinWidth = (std::max)(
 				pState.LastFrameLeftSideMinWidth,
-				ImGuiEx::DetailsSummaryEntry("healing per cast", "%.1f", divide_safe(adjustedHealing, *pState.Casts)));
+				ImGuiEx::DetailsSummaryEntry("치유/시전", "%.1f", divide_safe(adjustedHealing, *pState.Casts)));
 		}
 	}
 
@@ -363,16 +363,16 @@ static void Display_DetailsWindow(HealWindowContext& pContext, DetailsWindowStat
 	{
 		pState.LastFrameLeftSideMinWidth = (std::max)(
 			pState.LastFrameLeftSideMinWidth,
-			ImGuiEx::DetailsSummaryEntry("barrier gen per second", "%.1f", divide_safe(pState.BarrierGeneration, pState.TimeInCombat)));
+			ImGuiEx::DetailsSummaryEntry("배리어/초", "%.1f", divide_safe(pState.BarrierGeneration, pState.TimeInCombat)));
 		pState.LastFrameLeftSideMinWidth = (std::max)(
 			pState.LastFrameLeftSideMinWidth,
-			ImGuiEx::DetailsSummaryEntry("barrier gen per hit", "%.1f", divide_safe(pState.BarrierGeneration, pState.Hits)));
+			ImGuiEx::DetailsSummaryEntry("배리어/틱", "%.1f", divide_safe(pState.BarrierGeneration, pState.Hits)));
 
 		if (pState.Casts.has_value() == true)
 		{
 			pState.LastFrameLeftSideMinWidth = (std::max)(
 				pState.LastFrameLeftSideMinWidth,
-				ImGuiEx::DetailsSummaryEntry("barrier gen per cast", "%.1f", divide_safe(pState.BarrierGeneration, *pState.Casts)));
+				ImGuiEx::DetailsSummaryEntry("배리어/시전", "%.1f", divide_safe(pState.BarrierGeneration, *pState.Casts)));
 		}
 	}
 
@@ -537,7 +537,7 @@ static void Display_Content(HealWindowContext& pContext, DataSource pDataSource,
 	{
 		if (pEvtcRpcEnabled == false)
 		{
-			ImGui::TextWrapped("Live stats sharing is disabled. Enable \"live stats sharing\" under \"Heal Stats Options\" in order to see the healing done by other players in the squad.");
+			ImGui::TextWrapped("실시간 통계 공유가 꺼져 있습니다. 스쿼드원별 데이터를 보려면 치유 통계 옵션에서 \"실시간 통계 공유\"를 켜세요.");
 			pContext.CurrentFrameLineCount += 3;
 			return;
 		}
@@ -545,7 +545,7 @@ static void Display_Content(HealWindowContext& pContext, DataSource pDataSource,
 		evtc_rpc_client_status status = GlobalObjects::EVTC_RPC_CLIENT->GetStatus();
 		if (status.Connected == false)
 		{
-			ImGui::TextWrapped("Not connected to the live stats sharing server (\"%s\").", status.Endpoint.c_str());
+			ImGui::TextWrapped("실시간 통계 공유 서버(\"%s\")에 연결되지 않았습니다.", status.Endpoint.c_str());
 			pContext.CurrentFrameLineCount += 3;
 			return;
 		}
@@ -587,7 +587,7 @@ static void Display_WindowOptions_Position(HealTableOptions& pHealingOptions, He
 		case Position::ScreenRelative:
 		{
 			ImGui::Separator();
-			ImGui::TextUnformatted("relative to corner");
+			ImGui::TextUnformatted("화면 모서리");
 			ImGuiEx::SmallIndent();
 			ImGuiEx::SmallEnumRadioButton("ScreenCornerPositionEnum", pContext.RelativeScreenCorner, CORNER_POSITION_ITEMS);
 			ImGuiEx::SmallUnindent();
@@ -602,12 +602,12 @@ static void Display_WindowOptions_Position(HealTableOptions& pHealingOptions, He
 		case Position::WindowRelative:
 		{
 			ImGui::Separator();
-			ImGui::TextUnformatted("from anchor panel corner");
+			ImGui::TextUnformatted("기준 창 모서리");
 			ImGuiEx::SmallIndent();
 			ImGuiEx::SmallEnumRadioButton("AnchorCornerPositionEnum", pContext.RelativeAnchorWindowCorner, CORNER_POSITION_ITEMS);
 			ImGuiEx::SmallUnindent();
 
-			ImGui::TextUnformatted("to this panel corner");
+			ImGui::TextUnformatted("현재 창 모서리");
 			ImGuiEx::SmallIndent();
 			ImGuiEx::SmallEnumRadioButton("SelfCornerPositionEnum", pContext.RelativeSelfCorner, CORNER_POSITION_ITEMS);
 			ImGuiEx::SmallUnindent();
@@ -625,7 +625,7 @@ static void Display_WindowOptions_Position(HealTableOptions& pHealingOptions, He
 			}
 
 			ImGui::SetNextItemWidth(260.0f);
-			if (ImGui::BeginCombo("anchor window", selectedWindowName) == true)
+			if (ImGui::BeginCombo("기준 창", selectedWindowName) == true)
 			{
 				// This doesn't return the same thing as RootWindow interestingly enough, RootWindow returns a "higher" parent
 				ImGuiWindow* parent = ImGui::GetCurrentWindowRead();
@@ -675,72 +675,70 @@ static void Display_WindowOptions(HealTableOptions& pHealingOptions, HealWindowC
 	if (ImGui::BeginPopupContextWindow("Options##HEAL") == true)
 	{
 		ImGuiEx::SmallIndent();
-		ImGuiEx::ComboMenu("data source", pContext.DataSourceChoice, DATA_SOURCE_ITEMS);
-		ImGuiEx::AddTooltipToLastItem("Decides what data is shown in the window");
+		ImGuiEx::ComboMenu("데이터 소스", pContext.DataSourceChoice, DATA_SOURCE_ITEMS);
+		ImGuiEx::AddTooltipToLastItem("이 창에 사용할 데이터 소스를 정합니다");
 
 		{
 			ImGuiEx::ScopedUninteractable uninteractableScope{pContext.DataSourceChoice == DataSource::Totals};
 
-			ImGuiEx::ComboMenu("sort order", pContext.SortOrderChoice, SORT_ORDER_ITEMS);
-			ImGuiEx::AddTooltipToLastItem("Decides how targets and skills are sorted in the 'Targets' and 'Skills' sections.");
+			ImGuiEx::ComboMenu("정렬 순서", pContext.SortOrderChoice, SORT_ORDER_ITEMS);
+			ImGuiEx::AddTooltipToLastItem("대상별/스킬별 목록의 정렬 방식을 정합니다.");
 		}
 
-		if (ImGui::BeginMenu("stats exclude") == true)
+		if (ImGui::BeginMenu("제외 항목") == true)
 		{
 			{
 				ImGuiEx::ScopedUninteractable uninteractableScope{pContext.DataSourceChoice == DataSource::Totals};
 
-				ImGuiEx::SmallCheckBox("group", &pContext.ExcludeGroup);
-				ImGuiEx::SmallCheckBox("off-group", &pContext.ExcludeOffGroup);
-				ImGuiEx::SmallCheckBox("off-squad", &pContext.ExcludeOffSquad);
-				ImGuiEx::SmallCheckBox("summons", &pContext.ExcludeMinions);
-				ImGuiEx::SmallCheckBox("unmapped", &pContext.ExcludeUnmapped);
+				ImGuiEx::SmallCheckBox("내 파티", &pContext.ExcludeGroup);
+				ImGuiEx::SmallCheckBox("다른 파티", &pContext.ExcludeOffGroup);
+				ImGuiEx::SmallCheckBox("스쿼드 외", &pContext.ExcludeOffSquad);
+				ImGuiEx::SmallCheckBox("소환수", &pContext.ExcludeMinions);
+				ImGuiEx::SmallCheckBox("미확인 대상", &pContext.ExcludeUnmapped);
 			}
 
-			ImGuiEx::SmallCheckBox("healing", &pContext.ExcludeHealing);
-			ImGuiEx::SmallCheckBox("barrier generation", &pContext.ExcludeBarrierGeneration);
+			ImGuiEx::SmallCheckBox("치유", &pContext.ExcludeHealing);
+			ImGuiEx::SmallCheckBox("배리어", &pContext.ExcludeBarrierGeneration);
 
 			ImGui::EndMenu();
 		}
 
-		ImGuiEx::ComboMenu("combat end", pContext.CombatEndConditionChoice, COMBAT_END_CONDITION_ITEMS);
-		ImGuiEx::AddTooltipToLastItem("Decides what should be used for determining combat\n"
-										"end (and consequently time in combat)");
+		ImGuiEx::ComboMenu("전투 시간 기준", pContext.CombatEndConditionChoice, COMBAT_END_CONDITION_ITEMS);
+		ImGuiEx::AddTooltipToLastItem("전투 종료와 전투 시간을 계산할 기준입니다");
 
 		ImGuiEx::SmallUnindent();
 		ImGui::Separator();
 
-		if (ImGui::BeginMenu("Display") == true)
+		if (ImGui::BeginMenu("표시") == true)
 		{
-			ImGuiEx::SmallCheckBox("draw bars", &pContext.ShowProgressBars);
-			ImGuiEx::AddTooltipToLastItem("Show a colored bar under each entry signifying what the value of\n"
-				"that entry is in proportion to the largest entry");
+			ImGuiEx::SmallCheckBox("막대 표시", &pContext.ShowProgressBars);
+			ImGuiEx::AddTooltipToLastItem("가장 큰 항목 대비 비율을 각 행 아래의 색상 막대로 표시합니다");
 
-			if (ImGuiEx::SmallCheckBox("use subgroup for bar colour", &pContext.UseSubgroupForBarColour) == true && pContext.UseSubgroupForBarColour == true)
+			if (ImGuiEx::SmallCheckBox("막대에 파티 색상 사용", &pContext.UseSubgroupForBarColour) == true && pContext.UseSubgroupForBarColour == true)
 			{
 				// Mutually exclusive with "use profession for bar colour"
 				pContext.UseProfessionForBarColour = false;
 			}
-			if (ImGuiEx::SmallCheckBox("use profession for bar colour", &pContext.UseProfessionForBarColour) == true && pContext.UseProfessionForBarColour == true)
+			if (ImGuiEx::SmallCheckBox("막대에 직업 색상 사용", &pContext.UseProfessionForBarColour) == true && pContext.UseProfessionForBarColour == true)
 			{
 				// Mutually exclusive with "use subgroup for bar colour"
 				pContext.UseSubgroupForBarColour = false;
 			}
-			ImGuiEx::SmallCheckBox("index numbers", &pContext.IndexNumbers);
-			ImGuiEx::SmallCheckBox("profession text", &pContext.ProfessionText);
-			ImGuiEx::SmallCheckBox("profession icons", &pContext.ProfessionIcons);
-			ImGuiEx::SmallCheckBox("replace player with account name", &pContext.ReplacePlayerWithAccountName);
-			if (ImGuiEx::SmallCheckBox("use profession for name colour", &pContext.UseProfessionForNameColour) == true && pContext.UseProfessionForNameColour == true)
+			ImGuiEx::SmallCheckBox("순위 번호", &pContext.IndexNumbers);
+			ImGuiEx::SmallCheckBox("직업 약어", &pContext.ProfessionText);
+			ImGuiEx::SmallCheckBox("직업 아이콘", &pContext.ProfessionIcons);
+			ImGuiEx::SmallCheckBox("캐릭터명 대신 계정명", &pContext.ReplacePlayerWithAccountName);
+			if (ImGuiEx::SmallCheckBox("이름에 직업 색상 사용", &pContext.UseProfessionForNameColour) == true && pContext.UseProfessionForNameColour == true)
 			{
 				// Mutually exclusive with "use subgroup for name colour"
 				pContext.UseSubgroupForNameColour = false;
 			}
-			if (ImGuiEx::SmallCheckBox("use subgroup for name colour", &pContext.UseSubgroupForNameColour) == true && pContext.UseSubgroupForNameColour == true)
+			if (ImGuiEx::SmallCheckBox("이름에 파티 색상 사용", &pContext.UseSubgroupForNameColour) == true && pContext.UseSubgroupForNameColour == true)
 			{
 				// Mutually exclusive with "use profession for name colour"
 				pContext.UseProfessionForNameColour = false;
 			}
-			if (ImGuiEx::SmallCheckBox("self on top", &pContext.SelfOnTop) == true && pContext.SelfOnTop == true)
+			if (ImGuiEx::SmallCheckBox("내 캐릭터를 맨 위로", &pContext.SelfOnTop) == true && pContext.SelfOnTop == true)
 			{
 				// Mutually exclusive with "self only"
 				pContext.SelfOnly = false;
@@ -750,106 +748,106 @@ static void Display_WindowOptions(HealTableOptions& pHealingOptions, HealWindowC
 			if (pContext.SelfOnTop == true)
 			{
 				// Show "hide self from list" only when "self on top" is enabled
-				ImGuiEx::SmallCheckBox("hide self from list", &pContext.HideSelfFromList);
+				ImGuiEx::SmallCheckBox("목록에서 내 캐릭터 숨김", &pContext.HideSelfFromList);
 			}
-			if (ImGuiEx::SmallCheckBox("self only", &pContext.SelfOnly) == true && pContext.SelfOnly == true)
+			if (ImGuiEx::SmallCheckBox("내 캐릭터만", &pContext.SelfOnly) == true && pContext.SelfOnly == true)
 			{
 				// Mutually exclusive with "self on top" and "hide self from list"
 				pContext.SelfOnTop = false;
 				pContext.HideSelfFromList = false;
 			}
-			ImGuiEx::SmallCheckBox("anonymous mode", &pContext.AnonymousMode);
+			ImGuiEx::SmallCheckBox("익명 모드", &pContext.AnonymousMode);
 
 			ImGui::SetNextItemWidth(260.0f);
-			ImGuiEx::SmallInputText("short name", pContext.Name, sizeof(pContext.Name));
-			ImGuiEx::AddTooltipToLastItem("The name used to represent this window in the \"heal stats\" menu");
+			ImGuiEx::SmallInputText("창 이름", pContext.Name, sizeof(pContext.Name));
+			ImGuiEx::AddTooltipToLastItem("치유 통계 메뉴에 표시될 창 이름입니다");
 
 			ImGui::SetNextItemWidth(39.0f);
-			ImGuiEx::SmallInputInt("max name length", &pContext.MaxNameLength);
+			ImGuiEx::SmallInputInt("이름 길이 제한", &pContext.MaxNameLength);
 			ImGuiEx::AddTooltipToLastItem(
-				"Truncate displayed names to this many characters. Set to 0 to disable, -1 to hide");
+				"표시 이름을 지정한 글자 수로 자릅니다. 0은 비활성화, -1은 숨김입니다");
 
 			ImGui::SetNextItemWidth(39.0f);
-			ImGuiEx::SmallInputInt("min displayed", &pContext.MinLinesDisplayed);
+			ImGuiEx::SmallInputInt("최소 행 수", &pContext.MinLinesDisplayed);
 			ImGuiEx::AddTooltipToLastItem(
-				"The minimum amount of lines of data to show in this window.");
+				"이 창에 표시할 데이터 줄 수의 최솟값입니다.");
 
 			ImGui::SetNextItemWidth(39.0f);
-			ImGuiEx::SmallInputInt("max displayed", &pContext.MaxLinesDisplayed);
+			ImGuiEx::SmallInputInt("최대 행 수", &pContext.MaxLinesDisplayed);
 			ImGuiEx::AddTooltipToLastItem(
-				"The maximum amount of lines of data to show in this window. Set to 0 for no limit");
+				"이 창에 표시할 데이터 줄 수의 최댓값입니다. 0은 제한 없음입니다");
 
 			ImGui::SetNextItemWidth(260.0f);
-			ImGuiEx::SmallInputText("stats format", pContext.EntryFormat, sizeof(pContext.EntryFormat));
+			ImGuiEx::SmallInputText("행 표시 형식", pContext.EntryFormat, sizeof(pContext.EntryFormat));
 			if (pContext.DataSourceChoice != DataSource::Totals)
 			{
-				ImGuiEx::AddTooltipToLastItem("Format for displayed data (statistics are per entry).\n"
-					"{1}: Healing\n"
-					"{2}: Hits\n"
-					"{3}: Casts (not implemented yet)\n"
-					"{4}: Healing per second\n"
-					"{5}: Healing per hit\n"
-					"{6}: Healing per cast (not implemented yet)\n"
-					"{7}: Percent of total healing");
+				ImGuiEx::AddTooltipToLastItem("행에 표시할 값 형식입니다.\n"
+					"{1}: 치유량\n"
+					"{2}: 틱 수\n"
+					"{3}: 시전 수 (미구현)\n"
+					"{4}: 치유/초\n"
+					"{5}: 치유/틱\n"
+					"{6}: 치유/시전 (미구현)\n"
+					"{7}: 전체 치유량 비율");
 			}
 			else
 			{
-				ImGuiEx::AddTooltipToLastItem("Format for displayed data (statistics are per entry).\n"
-					"{1}: Healing\n"
-					"{2}: Hits\n"
-					"{3}: Casts (not implemented yet)\n"
-					"{4}: Healing per second\n"
-					"{5}: Healing per hit\n"
-					"{6}: Healing per cast (not implemented yet)");
+				ImGuiEx::AddTooltipToLastItem("행에 표시할 값 형식입니다.\n"
+					"{1}: 치유량\n"
+					"{2}: 틱 수\n"
+					"{3}: 시전 수 (미구현)\n"
+					"{4}: 치유/초\n"
+					"{5}: 치유/틱\n"
+					"{6}: 치유/시전 (미구현)");
 			}
 
 			ImGui::SetNextItemWidth(260.0f);
-			ImGuiEx::SmallInputText("title bar format", pContext.TitleFormat, sizeof(pContext.TitleFormat));
+			ImGuiEx::SmallInputText("제목 형식", pContext.TitleFormat, sizeof(pContext.TitleFormat));
 			if (pContext.DataSourceChoice != DataSource::Totals)
 			{
-				ImGuiEx::AddTooltipToLastItem("Format for the title of this window.\n"
-					"{1}: Total healing\n"
-					"{2}: Total hits\n"
-					"{3}: Total casts (not implemented yet)\n"
-					"{4}: Healing per second\n"
-					"{5}: Healing per hit\n"
-					"{6}: Healing per cast (not implemented yet)\n"
-					"{7}: Time in combat");
+				ImGuiEx::AddTooltipToLastItem("창 제목에 표시할 값 형식입니다.\n"
+					"{1}: 치유량 합계\n"
+					"{2}: 총 틱 수\n"
+					"{3}: 총 시전 수 (미구현)\n"
+					"{4}: 치유/초\n"
+					"{5}: 치유/틱\n"
+					"{6}: 치유/시전 (미구현)\n"
+					"{7}: 전투 시간");
 			}
 			else
 			{
-				ImGuiEx::AddTooltipToLastItem("Format for the title of this window.\n"
-					"{1}: Time in combat");
+				ImGuiEx::AddTooltipToLastItem("창 제목에 표시할 값 형식입니다.\n"
+					"{1}: 전투 시간");
 			}
 
 			ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("Style") == true)
+		if (ImGui::BeginMenu("스타일") == true)
 		{
-			ImGuiEx::SmallEnumCheckBox("title bar", &pContext.WindowFlags, ImGuiWindowFlags_NoTitleBar, true);
-			ImGuiEx::SmallEnumCheckBox("scroll bar", &pContext.WindowFlags, ImGuiWindowFlags_NoScrollbar, true);
-			ImGuiEx::SmallEnumCheckBox("background", &pContext.WindowFlags, ImGuiWindowFlags_NoBackground, true);
+			ImGuiEx::SmallEnumCheckBox("제목 표시줄", &pContext.WindowFlags, ImGuiWindowFlags_NoTitleBar, true);
+			ImGuiEx::SmallEnumCheckBox("스크롤 바", &pContext.WindowFlags, ImGuiWindowFlags_NoScrollbar, true);
+			ImGuiEx::SmallEnumCheckBox("배경", &pContext.WindowFlags, ImGuiWindowFlags_NoBackground, true);
 			
 			ImGui::Separator();
 
-			ImGuiEx::SmallCheckBox("auto resize window", &pContext.AutoResize);
+			ImGuiEx::SmallCheckBox("창 크기 자동 조정", &pContext.AutoResize);
 
 			{
 				ImGuiEx::ScopedUninteractable uninteractableScope{pContext.AutoResize == false};
 
 				ImGuiEx::SmallIndent();
 				ImGui::SetNextItemWidth(65.0f);
-				ImGuiEx::SmallInputInt("window width", &pContext.FixedWindowWidth);
+				ImGuiEx::SmallInputInt("고정 너비", &pContext.FixedWindowWidth);
 				ImGuiEx::AddTooltipToLastItem(
-					"Set to 0 for dynamic resizing of width");
+					"0으로 설정하면 너비를 동적으로 조정합니다");
 				ImGuiEx::SmallUnindent();
 			}
 
 			ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("Position") == true)
+		if (ImGui::BeginMenu("위치") == true)
 		{
 			Display_WindowOptions_Position(pHealingOptions, pContext);
 			ImGui::EndMenu();
@@ -861,7 +859,7 @@ static void Display_WindowOptions(HealTableOptions& pHealingOptions, HealWindowC
 		ImGui::BeginGroup();
 
 		ImGui::SetCursorPosY(oldPosY + ImGui::GetStyle().FramePadding.y);
-		ImGui::Text("Hotkey");
+		ImGui::Text("단축키");
 
 		ImGui::SameLine(0, ImGui::GetStyle().ItemInnerSpacing.x);
 		ImGui::SetCursorPosY(oldPosY);
@@ -873,8 +871,8 @@ static void Display_WindowOptions(HealTableOptions& pHealingOptions, HealWindowC
 		ImGui::Text("(%s)", VirtualKeyToString(pContext.Hotkey).c_str());
 
 		ImGui::EndGroup();
-		ImGuiEx::AddTooltipToLastItem("Numerical value (virtual key code) for the key\n"
-										"used to open and close this window");
+		ImGuiEx::AddTooltipToLastItem("이 창을 열고 닫는 데 사용할 키의 숫자값입니다\n"
+										"(가상 키 코드)");
 
 		ImGui::EndPopup();
 	}
@@ -994,17 +992,17 @@ void Display_GUI(HealTableOptions& pHealingOptions)
 			curWindow.CurrentFrameLineCount += 3; // For the 3 headers
 
 			ImGui::PushID(static_cast<int>(DataSource::Totals));
-			ImGuiEx::TextColoredCentered(ImColor(0, 209, 165), "Totals");
+			ImGuiEx::TextColoredCentered(ImColor(0, 209, 165), "합계");
 			Display_Content(curWindow, DataSource::Totals, i, pHealingOptions.EvtcRpcEnabled);
 			ImGui::PopID();
 
 			ImGui::PushID(static_cast<int>(DataSource::Agents));
-			ImGuiEx::TextColoredCentered(ImColor(0, 209, 165), "Targets");
+			ImGuiEx::TextColoredCentered(ImColor(0, 209, 165), "대상별");
 			Display_Content(curWindow, DataSource::Agents, i, pHealingOptions.EvtcRpcEnabled);
 			ImGui::PopID();
 
 			ImGui::PushID(static_cast<int>(DataSource::Skills));
-			ImGuiEx::TextColoredCentered(ImColor(0, 209, 165), "Skills");
+			ImGuiEx::TextColoredCentered(ImColor(0, 209, 165), "스킬별");
 			Display_Content(curWindow, DataSource::Skills, i, pHealingOptions.EvtcRpcEnabled);
 			ImGui::PopID();
 		}
@@ -1068,40 +1066,43 @@ static void Display_EvtcRpcStatus(const HealTableOptions& pHealingOptions)
 	if (status.Connected == true)
 	{
 		uint64_t seconds = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - status.ConnectTime).count();
-		const char* encryptString = "with";
+		const char* encryptString = "암호화";
 		if (status.Encrypted == false)
 		{
-			encryptString = "without";
+			encryptString = "암호화 없음";
 		}
-		ImGui::TextColored(ImVec4(0.0f, 0.75f, 0.0f, 1.0f), "Connected to %s for %llu seconds %s encryption", status.Endpoint.c_str(), seconds, encryptString);
+		ImGui::TextColored(ImVec4(0.0f, 0.75f, 0.0f, 1.0f), "서버 %s에 %llu초 동안 연결됨 (%s)", status.Endpoint.c_str(), seconds, encryptString);
 	}
 	else if (pHealingOptions.EvtcRpcEnabled == false)
 	{
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.2f, 1.0f), "Not connected since live stats sharing is disabled");
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.2f, 1.0f), "실시간 통계 공유가 꺼져 있어 연결하지 않았습니다");
 	}
 	else
 	{
-		ImGui::TextColored(ImVec4(0.75f, 0.0f, 0.0f, 1.0f), "Failed connecting to %s. Retrying...", status.Endpoint.c_str());
+		ImGui::TextColored(ImVec4(0.75f, 0.0f, 0.0f, 1.0f), "%s 연결 실패. 재시도 중...", status.Endpoint.c_str());
 	}
 }
 
 void Display_AddonOptions(HealTableOptions& pHealingOptions)
 {
-	ImGui::TextUnformatted("Heal Stats");
+	ImGui::TextUnformatted("치유 통계");
 	ImGuiEx::SmallIndent();
 	for (uint32_t i = 0; i < HEAL_WINDOW_COUNT; i++)
 	{
 		char buffer[128];
-		snprintf(buffer, sizeof(buffer), "(%u) %s", i, pHealingOptions.Windows[i].Name);
+		const char* windowName = pHealingOptions.Windows[i].Name[0] != '\0'
+			? pHealingOptions.Windows[i].Name
+			: "사용자 창";
+		snprintf(buffer, sizeof(buffer), "(%u) %s", i, windowName);
 		ImGuiEx::SmallCheckBox(buffer, &pHealingOptions.Windows[i].Shown);
 	}
 	ImGuiEx::SmallUnindent();
 
-	ImGuiEx::ComboMenu("auto updates", pHealingOptions.AutoUpdateSetting, AUTO_UPDATE_SETTING_ITEMS);
-	ImGuiEx::SmallCheckBox("debug mode", &pHealingOptions.DebugMode);
+	ImGuiEx::ComboMenu("자동 업데이트", pHealingOptions.AutoUpdateSetting, AUTO_UPDATE_SETTING_ITEMS);
+	ImGuiEx::SmallCheckBox("디버그 모드", &pHealingOptions.DebugMode);
 	ImGuiEx::AddTooltipToLastItem(
-		"Includes debug data in target and skill names.\n"
-		"Turn this on before taking screenshots of potential calculation issues.");
+		"대상명과 스킬명에 디버그 데이터를 포함합니다.\n"
+		"계산 문제를 제보하기 위한 스크린샷을 찍기 전에 켜세요.");
 
 	spdlog::string_view_t log_level_names[] = SPDLOG_LEVEL_NAMES;
 	std::string log_level_items[std::size(log_level_names)];
@@ -1110,80 +1111,72 @@ void Display_AddonOptions(HealTableOptions& pHealingOptions)
 		log_level_items[i] = std::string_view(log_level_names[i].data(), log_level_names[i].size());
 	}
 
-	if (ImGuiEx::ComboMenu("debug logging", pHealingOptions.LogLevel, LOG_LEVEL_ITEMS) == true)
+	if (ImGuiEx::ComboMenu("로그 레벨", pHealingOptions.LogLevel, LOG_LEVEL_ITEMS) == true)
 	{
 		Log_::SetLevel(pHealingOptions.LogLevel);
 	}
 	ImGuiEx::AddTooltipToLastItem(
-		"If not set to off, enables logging at the specified log level.\n"
-		"Logs are saved in addons\\logs\\arcdps_healing_stats\\. Logging\n"
-		"will have a small impact on performance.");
+		"off가 아니면 선택한 로그 레벨로 기록합니다.\n"
+		"로그는 addons\\logs\\arcdps_healing_stats\\에 저장됩니다.\n"
+		"로그 기록은 성능에 약간 영향을 줍니다.");
 
 	ImGui::Separator();
 
-	if (ImGuiEx::SmallCheckBox("log healing to EVTC logs", &pHealingOptions.EvtcLoggingEnabled) == true)
+	if (ImGuiEx::SmallCheckBox("EVTC 로그에 치유 기록", &pHealingOptions.EvtcLoggingEnabled) == true)
 	{
 		GlobalObjects::EVENT_PROCESSOR->SetEvtcLoggingEnabled(pHealingOptions.EvtcLoggingEnabled);
 	}
 
-	if (ImGuiEx::SmallCheckBox("enable live stats sharing", &pHealingOptions.EvtcRpcEnabled) == true)
+	if (ImGuiEx::SmallCheckBox("실시간 통계 공유 사용", &pHealingOptions.EvtcRpcEnabled) == true)
 	{
 		GlobalObjects::EVTC_RPC_CLIENT->SetEnabledStatus(pHealingOptions.EvtcRpcEnabled);
 	}
 	ImGuiEx::AddTooltipToLastItem(
-		"Enables live sharing of healing statistics with other\n"
-		"players in your squad. This is done through a central server\n"
-		"(see option below). After enabling live sharing, it might not\n"
-		"work properly until after changing map instance so all squad\n"
-		"members are properly detected.\n"
+		"스쿼드의 다른 애드온 사용자와 치유 통계를 실시간으로 공유합니다.\n"
+		"이 기능은 중앙 서버를 통해 동작합니다 (아래 옵션 참고).\n"
+		"활성화한 뒤에는 모든 스쿼드원이 제대로 감지되도록\n"
+		"맵 인스턴스를 바꾸기 전까지 정상 동작하지 않을 수 있습니다.\n"
 		"\n"
-		"The stats shared from other players can be viewed through a\n"
-		"heal stats window with its data source set to \"%s\"\n"
+		"다른 플레이어에게서 받은 통계는 데이터 소스를 \"%s\"로 설정한\n"
+		"치유 통계 창에서 볼 수 있습니다.\n"
 		"\n"
-		"Enabling this option has a small impact on performance, and\n"
-		"will put some additional load on your connection (a maximum\n"
-		"of about 10 kiB/s up and 100 kiB/s down). The download\n"
-		"connection usage increases the more players in your squad\n"
-		"have live stats sharing enabled, the upload connection usage\n"
-		"does not."
+		"이 옵션은 성능에 약간 영향을 주며 네트워크 사용량을 늘립니다\n"
+		"(최대 약 업로드 10 kiB/s, 다운로드 100 kiB/s). 다운로드 사용량은\n"
+		"스쿼드에서 실시간 통계 공유를 켠 플레이어가 많을수록 증가하지만,\n"
+		"업로드 사용량은 증가하지 않습니다."
 		, DATA_SOURCE_ITEMS[DataSource::PeersOutgoing]);
 
 	{
 		ImGuiEx::ScopedUninteractable uninteractableScope{pHealingOptions.EvtcRpcEnabled == false};
 
-		if (ImGuiEx::SmallCheckBox("live stats sharing - budget mode", &pHealingOptions.EvtcRpcBudgetMode) == true)
+		if (ImGuiEx::SmallCheckBox("실시간 통계 공유 - 절약 모드", &pHealingOptions.EvtcRpcBudgetMode) == true)
 		{
 			GlobalObjects::EVTC_RPC_CLIENT->SetBudgetMode(pHealingOptions.EvtcRpcBudgetMode);
 		}
 		ImGuiEx::AddTooltipToLastItem(
-			"Only send a minimal subset of events to peers. This reduces\n"
-			"the amount of upload bandwidth used by the addon. Healing\n"
-			"statistics shown will still be fully accurate, however combat\n"
-			"times as viewed by other players may be slightly inaccurate\n"
-			"while still in combat. If those players are running a version\n"
-			"of the addon released before budget mode support was\n"
-			"introduced, the combat times may be highly inaccurate, even\n"
-			"when out of combat. This option has no effect on download\n"
-			"bandwidth usage, only upload. Expected connection usage with\n"
-			"this option enabled should go down to <1kiB/s up.");
+			"최소한의 이벤트만 다른 플레이어에게 보냅니다. 애드온의 업로드\n"
+			"대역폭 사용량을 줄입니다. 표시되는 치유 통계는 여전히 정확하지만,\n"
+			"전투 중에는 다른 플레이어에게 보이는 전투 시간이 약간 부정확할 수\n"
+			"있습니다. 상대가 절약 모드 지원 이전 버전의 애드온을 사용 중이면\n"
+			"전투가 끝난 뒤에도 전투 시간이 크게 부정확할 수 있습니다. 이 옵션은\n"
+			"다운로드 사용량에는 영향을 주지 않고 업로드에만 영향을 줍니다.\n"
+			"이 옵션을 켜면 예상 업로드 사용량은 <1kiB/s로 내려갑니다.");
 
-		if (ImGuiEx::SmallCheckBox("live stats sharing - disable encryption", &pHealingOptions.EvtcRpcDisableEncryption) == true)
+		if (ImGuiEx::SmallCheckBox("실시간 통계 공유 - 암호화 끄기", &pHealingOptions.EvtcRpcDisableEncryption) == true)
 		{
 			GlobalObjects::EVTC_RPC_CLIENT->SetDisableEncryption(pHealingOptions.EvtcRpcDisableEncryption);
 		}
 		ImGuiEx::AddTooltipToLastItem(
-			"By default, all messages sent to and from the live stats\n"
-			"sharing server are encrypted using TLS. This option disables\n"
-			"the encryption, which can be useful to work around certain\n"
-			"security applications, as well as to reduce the CPU usage of\n"
-			"live stats sharing");
+			"기본적으로 실시간 통계 공유 서버와 주고받는 모든 메시지는 TLS로\n"
+			"암호화됩니다. 이 옵션은 암호화를 끕니다. 일부 보안 프로그램과의\n"
+			"충돌을 피하거나 실시간 통계 공유의 CPU 사용량을 줄일 때 유용할 수 있습니다.");
 	}
 
 	float oldPosY = ImGui::GetCursorPosY();
 	ImGui::BeginGroup();
 
 	ImGui::SetCursorPosY(oldPosY + ImGui::GetStyle().FramePadding.y);
-	ImGui::Text("live stats sharing hotkey");
+	ImGui::Text("공유 단축키");
 
 	ImGui::SameLine(0, ImGui::GetStyle().ItemInnerSpacing.x);
 	ImGui::SetCursorPosY(oldPosY);
@@ -1195,25 +1188,25 @@ void Display_AddonOptions(HealTableOptions& pHealingOptions)
 	ImGui::Text("(%s)", VirtualKeyToString(pHealingOptions.EvtcRpcEnabledHotkey).c_str());
 
 	ImGui::EndGroup();
-	ImGuiEx::AddTooltipToLastItem("Numerical value (virtual key code) for the key\n"
-		"used to toggle live stats sharing");
+	ImGuiEx::AddTooltipToLastItem("실시간 통계 공유를 켜고 끄는 데 사용할 키의\n"
+		"숫자값입니다 (가상 키 코드)");
 
-	ImGuiEx::SmallInputText("evtc rpc server", pHealingOptions.EvtcRpcEndpoint, sizeof(pHealingOptions.EvtcRpcEndpoint));
+	ImGuiEx::SmallInputText("EVTC RPC 서버", pHealingOptions.EvtcRpcEndpoint, sizeof(pHealingOptions.EvtcRpcEndpoint));
 	ImGuiEx::AddTooltipToLastItem(
-		"The server to communicate with for evtc_rpc communication\n"
-		"(allowing other squad members to see your healing stats).\n"
-		"All local combat events will be sent to this server. Make\n"
-		"sure you trust it.");
+		"evtc_rpc 통신에 사용할 서버입니다\n"
+		"(다른 스쿼드원이 내 치유 통계를 볼 수 있게 합니다).\n"
+		"모든 로컬 전투 이벤트가 이 서버로 전송됩니다.\n"
+		"신뢰할 수 있는 서버인지 확인하세요.");
 	Display_EvtcRpcStatus(pHealingOptions);
 
 	ImGui::Separator();
 
-	if (ImGui::Button("reset all settings") == true)
+	if (ImGui::Button("설정 초기화") == true)
 	{
 		pHealingOptions.Reset();
 		LogD("Reset settings");
 	}
-	ImGuiEx::AddTooltipToLastItem("Resets all global and window specific settings to their default values.");
+	ImGuiEx::AddTooltipToLastItem("모든 전역 설정과 창별 설정을 기본값으로 되돌립니다.");
 }
 
 void FindAndResolveCyclicDependencies(HealTableOptions& pHealingOptions, size_t pStartIndex)

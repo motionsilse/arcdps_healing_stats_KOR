@@ -1,6 +1,24 @@
 # ArcDPS Healing Stats
 [![downloads](https://img.shields.io/github/downloads/Krappa322/arcdps_healing_stats/total)](https://github.com/Krappa322/arcdps_healing_stats/releases/latest)
 
+## Korean localized build
+
+This fork provides an unofficial Korean-localized build of
+[Krappa322/arcdps_healing_stats](https://github.com/Krappa322/arcdps_healing_stats).
+
+- UI and option text are translated to Korean.
+- Skill names, profession names, and other Guild Wars 2 proper nouns are intentionally left untranslated.
+- The release DLL is named `arcdps_healing_stats_KOR.dll`.
+- This project remains under the original MIT License. See [LICENSE](./LICENSE).
+
+### 한국어 설치
+
+1. [Releases](../../releases)에서 최신 `arcdps_healing_stats_KOR.dll`을 받습니다.
+2. ArcDPS의 `d3d11.dll`이 있는 Guild Wars 2 폴더에 DLL을 넣습니다.
+3. 게임 안 arcdps 메뉴의 `치유 통계` 항목에서 원하는 창을 켭니다.
+
+이 빌드는 원본 제작자의 공식 한국어판이 아닙니다. 한국어 번역 관련 문제는 이 fork의 Issues에 남겨 주세요.
+
 Show healing statistics based on your local stats (i.e. your own healing output).
 
 This includes outgoing healing per agent and per skill, as well as filtering to only include your own subgroup/squad or to exclude minions. Format of the window title and contents are fully configurable and windows can be configured to show different data (targets healed, skills used to heal, total healing).

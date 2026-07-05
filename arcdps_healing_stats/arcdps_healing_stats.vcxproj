@@ -93,7 +93,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp23</LanguageStandard>
       <PrecompiledHeaderFile />
-      <AdditionalIncludeDirectories>..\modules\arcdps_extension;..\src;$(SolutionDir)$(Platform)\autogen</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\vcpkg_installed\x64-windows-static\include;..\modules\arcdps_extension;..\src;$(SolutionDir)$(Platform)\autogen;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
@@ -103,7 +103,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(SolutionDir)\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\$(Platform)\$(Configuration);..\vcpkg_installed\x64-windows-static\lib;..\vcpkg_installed\x64-windows-static\lib\manual-link;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>arcdps_personal_stats_lib.lib;networking.lib;Iphlpapi.lib;Version.lib;winmm.lib;ws2_32.lib;crypt32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -167,7 +167,7 @@
     <ResourceCompile Include="..\arcdps_personal_stats.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\vcpkg_installed\x64-windows-static\x64-windows\share\grpc\roots.pem" />
+    <None Include="..\vcpkg_installed\x64-windows-static\share\grpc\roots.pem" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\icons\specs\000.png" />

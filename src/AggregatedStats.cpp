@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <map>
 
-constexpr const char* GROUP_FILTER_STRING[] = { "Group", "Squad", "All (Excluding Summons)", "All (Including Summons)" };
+constexpr const char* GROUP_FILTER_STRING[] = { "파티", "스쿼드", "전체 (소환수 제외)", "전체 (소환수 포함)" };
 static_assert((sizeof(GROUP_FILTER_STRING) / sizeof(GROUP_FILTER_STRING[0])) == static_cast<size_t>(GroupFilter::Max), "Added group filter option without updating gui?");
 
 AggregatedStatsEntry::AggregatedStatsEntry(uint64_t pId, HealedAgent&& pAgent, float pTimeInCombat, uint64_t pHealing, uint64_t pHits, std::optional<uint64_t> pCasts, uint64_t pBarrierGeneration)
@@ -522,7 +522,7 @@ const AggregatedVector& AggregatedStats::GetSkills(std::optional<uintptr_t> pAge
 	// TODO: Can this be separated into indirect healing and barrier generation as separate entries? 
 	if (totalIndirectHealing != 0 || totalIndirectTicks != 0 || totalIndirectBarrierGeneration != 0)
 	{
-		std::string skillName("From Damage Dealt");
+		std::string skillName("피해 기반 치유");
 
 		entry->Add(IndirectHealingSkillId, HealedAgent{std::move(skillName)}, GetCombatTime(), totalIndirectHealing, totalIndirectTicks, std::nullopt, totalIndirectBarrierGeneration);
 	}

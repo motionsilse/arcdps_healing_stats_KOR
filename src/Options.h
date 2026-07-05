@@ -57,7 +57,7 @@ struct HealWindowContext : HealWindowOptions
 
 struct HealTableOptions
 {
-	AutoUpdateSettingEnum AutoUpdateSetting = AutoUpdateSettingEnum::On;
+	AutoUpdateSettingEnum AutoUpdateSetting = AutoUpdateSettingEnum::Off;
 	bool DebugMode = false;
 	bool GrpcDnsResolverCAres = false;
 	spdlog::level::level_enum LogLevel = spdlog::level::off;

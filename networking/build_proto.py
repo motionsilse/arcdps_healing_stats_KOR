@@ -1,11 +1,29 @@
 # Doing builds with an intermediate python file means the custom build step looks a bit cleaner, and we can also
 # provide visual studio parseable errors so that they show up in the error list (instead of having to scroll through
 # the build output)
-import re, subprocess, sys
+import os
+import re
+import subprocess
+import sys
+
+
+def first_existing(*paths):
+	for path in paths:
+		if os.path.exists(path):
+			return path
+	return paths[0]
 
 triplet = sys.argv[1]
-protoc_path = r"..\vcpkg_installed\{}\tools\protobuf\protoc.exe".format(triplet)
-grpc_plugin_path = r"..\vcpkg_installed\{}\tools\grpc\grpc_cpp_plugin.exe".format(triplet)
+protoc_path = first_existing(
+	r"..\vcpkg_installed\{}\tools\protobuf\protoc.exe".format(triplet),
+	r"..\vcpkg_installed\x64-windows-static\tools\protobuf\protoc.exe",
+	r"..\vcpkg_installed\x64-windows\tools\protobuf\protoc.exe",
+)
+grpc_plugin_path = first_existing(
+	r"..\vcpkg_installed\{}\tools\grpc\grpc_cpp_plugin.exe".format(triplet),
+	r"..\vcpkg_installed\x64-windows\tools\grpc\grpc_cpp_plugin.exe",
+	r"..\vcpkg_installed\x64-windows-static\tools\grpc\grpc_cpp_plugin.exe",
+)
 filename = sys.argv[2]
 output_path = sys.argv[3]
 

@@ -101,43 +101,43 @@ DetailsWindowState::DetailsWindowState(const AggregatedStatsEntry& pEntry)
 HealTableOptions::HealTableOptions()
 {
 	Windows[0].DataSourceChoice = DataSource::Totals;
-	snprintf(Windows[0].Name, sizeof(Windows[0].Name), "%s", "Totals");
-	snprintf(Windows[0].TitleFormat, sizeof(Windows[0].TitleFormat), "%s", "Totals ({1}s in combat)");
-	snprintf(Windows[0].EntryFormat, sizeof(Windows[0].EntryFormat), "%s", "{1} ({4}/s)");
+	snprintf(Windows[0].Name, sizeof(Windows[0].Name), "%s", "합계");
+	snprintf(Windows[0].TitleFormat, sizeof(Windows[0].TitleFormat), "%s", "합계 (전투 {1}초)");
+	snprintf(Windows[0].EntryFormat, sizeof(Windows[0].EntryFormat), "%s", "{1} ({4}/초)");
 
 	Windows[1].DataSourceChoice = DataSource::Agents;
-	snprintf(Windows[1].Name, sizeof(Windows[1].Name), "%s", "Targets");
-	snprintf(Windows[1].TitleFormat, sizeof(Windows[1].TitleFormat), "%s", "Targets {1} ({4}/s, {7}s in combat)");
+	snprintf(Windows[1].Name, sizeof(Windows[1].Name), "%s", "대상별");
+	snprintf(Windows[1].TitleFormat, sizeof(Windows[1].TitleFormat), "%s", "대상별 {1} ({4}/초, 전투 {7}초)");
 
 	Windows[2].DataSourceChoice = DataSource::Skills;
-	snprintf(Windows[2].Name, sizeof(Windows[2].Name), "%s", "Skills");
-	snprintf(Windows[2].TitleFormat, sizeof(Windows[2].TitleFormat), "%s", "Skills {1} ({4}/s, {7}s in combat)");
+	snprintf(Windows[2].Name, sizeof(Windows[2].Name), "%s", "스킬별");
+	snprintf(Windows[2].TitleFormat, sizeof(Windows[2].TitleFormat), "%s", "스킬별 {1} ({4}/초, 전투 {7}초)");
 
 	Windows[3].DataSourceChoice = DataSource::Agents;
-	snprintf(Windows[3].Name, sizeof(Windows[3].Name), "%s", "Targets (hits)");
-	snprintf(Windows[3].TitleFormat, sizeof(Windows[3].TitleFormat), "%s", "Targets {1} ({5}/hit, {2} hits)");
-	snprintf(Windows[3].EntryFormat, sizeof(Windows[3].EntryFormat), "%s", "{1} ({5}/hit, {2} hits)");
-	snprintf(Windows[3].DetailsEntryFormat, sizeof(Windows[3].DetailsEntryFormat), "%s", "{1} ({5}/hit, {2} hits)");
+	snprintf(Windows[3].Name, sizeof(Windows[3].Name), "%s", "대상별 (틱)");
+	snprintf(Windows[3].TitleFormat, sizeof(Windows[3].TitleFormat), "%s", "대상별 {1} ({5}/틱, {2}틱)");
+	snprintf(Windows[3].EntryFormat, sizeof(Windows[3].EntryFormat), "%s", "{1} ({5}/틱, {2}틱)");
+	snprintf(Windows[3].DetailsEntryFormat, sizeof(Windows[3].DetailsEntryFormat), "%s", "{1} ({5}/틱, {2}틱)");
 
 	Windows[4].DataSourceChoice = DataSource::Skills;
-	snprintf(Windows[4].Name, sizeof(Windows[4].Name), "%s", "Skills (hits)");
-	snprintf(Windows[4].TitleFormat, sizeof(Windows[4].TitleFormat), "%s", "Skills {1} ({5}/hit, {2} hits)");
-	snprintf(Windows[4].EntryFormat, sizeof(Windows[4].EntryFormat), "%s", "{1} ({5}/hit, {2} hits)");
-	snprintf(Windows[4].DetailsEntryFormat, sizeof(Windows[4].DetailsEntryFormat), "%s", "{1} ({5}/hit, {2} hits)");
+	snprintf(Windows[4].Name, sizeof(Windows[4].Name), "%s", "스킬별 (틱)");
+	snprintf(Windows[4].TitleFormat, sizeof(Windows[4].TitleFormat), "%s", "스킬별 {1} ({5}/틱, {2}틱)");
+	snprintf(Windows[4].EntryFormat, sizeof(Windows[4].EntryFormat), "%s", "{1} ({5}/틱, {2}틱)");
+	snprintf(Windows[4].DetailsEntryFormat, sizeof(Windows[4].DetailsEntryFormat), "%s", "{1} ({5}/틱, {2}틱)");
 
 	Windows[5].DataSourceChoice = DataSource::PeersOutgoing;
-	snprintf(Windows[5].Name, sizeof(Windows[5].Name), "%s", "Peers outgoing");
-	snprintf(Windows[5].TitleFormat, sizeof(Windows[5].TitleFormat), "%s", "Outgoing healing {1} ({4}/s, {7}s in combat)");
+	snprintf(Windows[5].Name, sizeof(Windows[5].Name), "%s", "스쿼드원별");
+	snprintf(Windows[5].TitleFormat, sizeof(Windows[5].TitleFormat), "%s", "치유량 {1} ({4}/초, 전투 {7}초)");
 
 	Windows[6].DataSourceChoice = DataSource::PeersOutgoing;
 	Windows[6].ExcludeHealing = true;
 	Windows[6].ExcludeBarrierGeneration = false;
-	snprintf(Windows[6].Name, sizeof(Windows[6].Name), "%s", "Peers barrier generation");
-	snprintf(Windows[6].TitleFormat, sizeof(Windows[6].TitleFormat), "%s", "Barrier generation {1} ({4}/s, {7}s in combat)");
+	snprintf(Windows[6].Name, sizeof(Windows[6].Name), "%s", "스쿼드원 배리어량");
+	snprintf(Windows[6].TitleFormat, sizeof(Windows[6].TitleFormat), "%s", "배리어량 {1} ({4}/초, 전투 {7}초)");
 
 	Windows[9].DataSourceChoice = DataSource::Combined;
-	snprintf(Windows[9].Name, sizeof(Windows[9].Name), "%s", "Combined");
-	snprintf(Windows[9].TitleFormat, sizeof(Windows[9].TitleFormat), "%s", "Combined {1} ({4}/s, {7}s in combat)");
+	snprintf(Windows[9].Name, sizeof(Windows[9].Name), "%s", "통합 보기");
+	snprintf(Windows[9].TitleFormat, sizeof(Windows[9].TitleFormat), "%s", "통합 보기 {1} ({4}/초, 전투 {7}초)");
 }
 
 void HealTableOptions::Load(const char* pConfigPath)
