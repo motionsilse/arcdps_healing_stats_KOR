@@ -58,15 +58,15 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <TargetName>arcdps_healing_stats</TargetName>
+    <TargetName>Healing_Stats</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Address Sanitizer|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <TargetName>arcdps_healing_stats</TargetName>
+    <TargetName>Healing_Stats</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>arcdps_healing_stats</TargetName>
+    <TargetName>Healing_Stats</TargetName>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <VcpkgAutoLink>true</VcpkgAutoLink>

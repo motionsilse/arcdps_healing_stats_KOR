@@ -75,12 +75,12 @@ BEGIN
     BEGIN
         BLOCK "200004b0"
         BEGIN
-            VALUE "FileDescription", "arcdps_healing_stats"
+            VALUE "FileDescription", "Healing_Stats"
             VALUE "FileVersion", "2.18.1.1"
-            VALUE "InternalName", "arcdps_healing_stats"
+            VALUE "InternalName", "Healing_Stats"
             VALUE "LegalCopyright", "Copyright (C) 2022"
-            VALUE "OriginalFilename", "arcdps_healing_stats.dll"
-            VALUE "ProductName", "arcdps_healing_stats"
+            VALUE "OriginalFilename", "Healing_Stats.dll"
+            VALUE "ProductName", "Healing_Stats KOR"
             VALUE "ProductVersion", "2.18.1.1"
         END
     END

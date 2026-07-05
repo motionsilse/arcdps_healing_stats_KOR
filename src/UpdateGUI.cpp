@@ -62,7 +62,7 @@ void Display_UpdateWindow()
 
 			if (ImGui::Button("다운로드 페이지 열기") == true)
 			{
-				ShellExecuteA(nullptr, nullptr, "https://github.com/Krappa322/arcdps_healing_stats/releases", nullptr, nullptr, SW_SHOW);
+				ShellExecuteA(nullptr, nullptr, "https://github.com/motionsilse/arcdps_healing_stats_KOR/releases", nullptr, nullptr, SW_SHOW);
 			}
 
 			switch (state->UpdateStatus)

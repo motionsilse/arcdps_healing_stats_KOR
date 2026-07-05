@@ -13,13 +13,13 @@
 받을 파일:
 
 ```text
-arcdps_healing_stats_KOR.dll
+Healing_Stats.dll
 ```
 
 ## 설치
 
 1. [ArcDPS](https://www.deltaconnected.com/arcdps/)를 먼저 설치합니다.
-2. `arcdps_healing_stats_KOR.dll`을 ArcDPS의 `d3d11.dll`이 있는 길드워2 폴더에 넣습니다.
+2. `Healing_Stats.dll`을 ArcDPS의 `d3d11.dll`이 있는 길드워2 폴더에 넣습니다.
 3. 길드워2를 실행한 뒤 arcdps 메뉴에서 `치유 통계` 창을 켭니다.
 
 ## 한국어화 범위
