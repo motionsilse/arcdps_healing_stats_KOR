@@ -140,6 +140,40 @@ HealTableOptions::HealTableOptions()
 	snprintf(Windows[9].TitleFormat, sizeof(Windows[9].TitleFormat), "%s", "통합 보기 {1} ({4}/초, 전투 {7}초)");
 }
 
+static bool ReplaceSavedDefaultWindowName(HealWindowContext& pWindow, const char* pOldName, const char* pNewName)
+{
+	if (strcmp(pWindow.Name, pOldName) != 0)
+	{
+		return false;
+	}
+
+	snprintf(pWindow.Name, sizeof(pWindow.Name), "%s", pNewName);
+	return true;
+}
+
+static bool MigrateDefaultKoreanWindowNames(HealTableOptions& pOptions)
+{
+	bool changed = false;
+
+	if (pOptions.Windows[5].DataSourceChoice == DataSource::PeersOutgoing &&
+		pOptions.Windows[5].ExcludeHealing == false &&
+		pOptions.Windows[5].ExcludeBarrierGeneration == true)
+	{
+		changed |= ReplaceSavedDefaultWindowName(pOptions.Windows[5], "Peers outgoing", "스쿼드원별 치유량");
+		changed |= ReplaceSavedDefaultWindowName(pOptions.Windows[5], "스쿼드원별", "스쿼드원별 치유량");
+	}
+
+	if (pOptions.Windows[6].DataSourceChoice == DataSource::PeersOutgoing &&
+		pOptions.Windows[6].ExcludeHealing == true &&
+		pOptions.Windows[6].ExcludeBarrierGeneration == false)
+	{
+		changed |= ReplaceSavedDefaultWindowName(pOptions.Windows[6], "Peers barrier generation", "스쿼드원별 배리어량");
+		changed |= ReplaceSavedDefaultWindowName(pOptions.Windows[6], "스쿼드원 배리어량", "스쿼드원별 배리어량");
+	}
+
+	return changed;
+}
+
 void HealTableOptions::Load(const char* pConfigPath)
 {
 	std::string buffer;
@@ -153,6 +187,7 @@ void HealTableOptions::Load(const char* pConfigPath)
 		bool readIni = ReadIni(*this);
 		if (readIni == true)
 		{
+			MigrateDefaultKoreanWindowNames(*this);
 			LogI("Successfully read from legacy ini. Saving json");
 			bool savedJson = Save(pConfigPath);
 			if (savedJson == true)
@@ -193,6 +228,10 @@ void HealTableOptions::Load(const char* pConfigPath)
 	{
 		nlohmann::json jsonObject = nlohmann::json::parse(buffer.data());
 		FromJson(jsonObject);
+		if (MigrateDefaultKoreanWindowNames(*this) == true)
+		{
+			Save(pConfigPath);
+		}
 	}
 	catch (std::exception& e)
 	{
