@@ -126,13 +126,13 @@ HealTableOptions::HealTableOptions()
 	snprintf(Windows[4].DetailsEntryFormat, sizeof(Windows[4].DetailsEntryFormat), "%s", "{1} ({5}/틱, {2}틱)");
 
 	Windows[5].DataSourceChoice = DataSource::PeersOutgoing;
-	snprintf(Windows[5].Name, sizeof(Windows[5].Name), "%s", "스쿼드원별");
+	snprintf(Windows[5].Name, sizeof(Windows[5].Name), "%s", "스쿼드원별 치유량");
 	snprintf(Windows[5].TitleFormat, sizeof(Windows[5].TitleFormat), "%s", "치유량 {1} ({4}/초, 전투 {7}초)");
 
 	Windows[6].DataSourceChoice = DataSource::PeersOutgoing;
 	Windows[6].ExcludeHealing = true;
 	Windows[6].ExcludeBarrierGeneration = false;
-	snprintf(Windows[6].Name, sizeof(Windows[6].Name), "%s", "스쿼드원 배리어량");
+	snprintf(Windows[6].Name, sizeof(Windows[6].Name), "%s", "스쿼드원별 배리어량");
 	snprintf(Windows[6].TitleFormat, sizeof(Windows[6].TitleFormat), "%s", "배리어량 {1} ({4}/초, 전투 {7}초)");
 
 	Windows[9].DataSourceChoice = DataSource::Combined;
