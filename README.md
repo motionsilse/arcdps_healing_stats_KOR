@@ -1,75 +1,106 @@
-# ArcDPS Healing Stats
-[![downloads](https://img.shields.io/github/downloads/Krappa322/arcdps_healing_stats/total)](https://github.com/Krappa322/arcdps_healing_stats/releases/latest)
+# arcdps Healing Stats KOR
 
-## Korean localized build
+길드워2 arcdps 치유 통계 애드온
+[Krappa322/arcdps_healing_stats](https://github.com/Krappa322/arcdps_healing_stats)의
+비공식 한국어 빌드입니다.
 
-This fork provides an unofficial Korean-localized build of
-[Krappa322/arcdps_healing_stats](https://github.com/Krappa322/arcdps_healing_stats).
+이 저장소는 한국어 사용자를 위한 배포용 fork입니다. 원본 제작자의 공식 한국어판은 아닙니다.
 
-- UI and option text are translated to Korean.
-- Skill names, profession names, and other Guild Wars 2 proper nouns are intentionally left untranslated.
-- The release DLL is named `arcdps_healing_stats_KOR.dll`.
-- This project remains under the original MIT License. See [LICENSE](./LICENSE).
+## 다운로드
 
-### 한국어 설치
+최신 DLL은 [Releases](../../releases)에서 받을 수 있습니다.
 
-1. [Releases](../../releases)에서 최신 `arcdps_healing_stats_KOR.dll`을 받습니다.
-2. ArcDPS의 `d3d11.dll`이 있는 Guild Wars 2 폴더에 DLL을 넣습니다.
-3. 게임 안 arcdps 메뉴의 `치유 통계` 항목에서 원하는 창을 켭니다.
+받을 파일:
 
-이 빌드는 원본 제작자의 공식 한국어판이 아닙니다. 한국어 번역 관련 문제는 이 fork의 Issues에 남겨 주세요.
+```text
+arcdps_healing_stats_KOR.dll
+```
 
-Show healing statistics based on your local stats (i.e. your own healing output).
+## 설치
 
-This includes outgoing healing per agent and per skill, as well as filtering to only include your own subgroup/squad or to exclude minions. Format of the window title and contents are fully configurable and windows can be configured to show different data (targets healed, skills used to heal, total healing).
+1. [ArcDPS](https://www.deltaconnected.com/arcdps/)를 먼저 설치합니다.
+2. `arcdps_healing_stats_KOR.dll`을 ArcDPS의 `d3d11.dll`이 있는 길드워2 폴더에 넣습니다.
+3. 길드워2를 실행한 뒤 arcdps 메뉴에서 `치유 통계` 창을 켭니다.
 
-If live stats sharing is enabled, this addon also allows you to see other players in your squads healing stats (and them to see yours)
+## 한국어화 범위
 
-Also logs healing to the arcdps evtc, allowing evtc parsers to show healing stats.
+- UI 메뉴, 옵션, 도움말, 기본 창 이름을 한국어로 번역했습니다.
+- 스킬명, 직업명, 전문화명 같은 길드워2 고유명사는 번역하지 않았습니다.
+- `Peers outgoing` 기본 창은 실제 표시 내용에 맞춰 `스쿼드원별 치유량`으로 표기했습니다.
+- 배리어 전용 기본 창은 `스쿼드원별 배리어량`으로 표기했습니다.
 
-## Installation
-Requires [ArcDPS](https://www.deltaconnected.com/arcdps/).
+## 기본 창 이름
 
-Download the latest [arcdps_healing_stats.dll](https://github.com/Krappa322/arcdps_healing_stats/releases/latest) from the Releases page. Drag and drop arcdps_healing_stats.dll into the same directory as arcdps (d3d11.dll)
+| 번호 | 이름 |
+|---:|---|
+| 0 | 합계 |
+| 1 | 대상별 |
+| 2 | 스킬별 |
+| 3 | 대상별 (틱) |
+| 4 | 스킬별 (틱) |
+| 5 | 스쿼드원별 치유량 |
+| 6 | 스쿼드원별 배리어량 |
+| 7 | 사용자 창 |
+| 8 | 사용자 창 |
+| 9 | 통합 보기 |
 
-## Usage
-Toggle any window under the "Heal Stats" menu in the arcdps main menu. Right-click the window to see more options and hover over options to see what they do. All configuration is done per window, and there can be up to 10 different windows.
+## 주요 용어
 
-To enable live-sharing of healing stats, allowing you to see others healing stats (and them to see yours), go to "Heal Stats Options" and check the checkbox for "enable live stats sharing"
+| 원문 | 한국어 |
+|---|---|
+| Data source | 데이터 소스 |
+| Peers outgoing | 스쿼드원별 |
+| Outgoing healing | 치유량 |
+| Barrier generation | 배리어량 |
+| Hits | 틱 수 |
+| Healing per hit | 치유/틱 |
+| Barrier generation per hit | 배리어/틱 |
+| Live stats sharing | 실시간 통계 공유 |
+| Unmapped | 미확인 대상 |
+| From Damage Dealt | 피해 기반 치유 |
 
-## Issues and requests
-Please report issues and requests using the github issue tracker
+## 기능 요약
 
-## Pictures
-![Example](./Example.png)
+이 애드온은 arcdps가 제공하는 로컬 치유 이벤트를 기반으로 자신의 치유량을 집계합니다.
 
-## Technical information
-This addon uses the local stats provided by ArcDPS to count healing done. This information is only available for the local player, i.e. the server does not notify about healing done by other players to other players. As such it is not possible to extend the addon to include everyone's healing without every player in the instance having the addon installed.
+볼 수 있는 정보:
 
-## Planned features
-- Displaying healing done per time skill was cast
-- Track overhealing. This is kind of hard because it would require simulating healing events and how much they should be healing (which requires knowing all modifiers and such). Please open an issue with suggestions for how to do this if you know of any :)
-- Store history similar to that available in the vanilla ArcDPS dps window (i.e. show statistics for previous encounters)
-- Display a graph showing healing done over time (allowing visualisation of when healing pressure is high)
-- More statistics than just healing. Confusion comes to mind, since the 10 man log method mentioned above could in the case of confusion create a log that shows true dps done for bosses where self stats and area stats don't match (such as Soulless Horror)
+- 대상별 치유량
+- 스킬별 치유량
+- 합계 치유량
+- 배리어량
+- 틱 수 기준 통계
+- 실시간 통계 공유를 켠 스쿼드원의 치유 통계
 
-## Copyright Notice
-This project is licensed under the MIT license (see the LICENSE file for more details). It makes use of the following third party libraries (they are all statically linked):
-### arcdps-extension
-[arcdps-extension](https://github.com/knoxfighter/arcdps-extension), licensed under the MIT license and included in this project as a git submodule of [arcdps_mock](/arcdps_mock).
-### Dear ImGui
-[Dear ImGui](https://github.com/ocornut/imgui), licensed under the MIT license and included in this project as a git submodule [imgui](/imgui).
-### GoogleTest
-[GoogleTest](https://github.com/google/googletest), licensed under the BSD-3-Clause license and included in this project as a linking/header dependency (provided through vcpkg).
-### gRPC
-[gRPC](https://github.com/grpc/grpc), licensed under the Apache-2.0 license and included in this project as a linking/header dependency (provided through vcpkg).
-### JSON for Modern C++
-[JSON for Modern C++](https://github.com/nlohmann/json), licensed under the MIT license and included in this project as a linking/header dependency (provided through vcpkg).
-### Prometheus Client Library for Modern C++
-[prometheus-cpp](https://github.com/jupp0r/prometheus-cpp), licensed under the MIT license and included in this project as a linking/header dependency (provided through vcpkg).
-### Protocol Buffers
-[Protocol Buffers](https://github.com/protocolbuffers/protobuf), licensed under the BSD-3-Clause license and included in this project as a linking/header dependency (provided through vcpkg).
-### simpleini
-[simpleini](https://github.com/brofield/simpleini), licensed under the MIT license and included in this project as a directory [simpleini](/simpleini).
-### spdlog
-[spdlog](https://github.com/gabime/spdlog), licensed under the MIT license and included in this project as a linking/header dependency (provided through vcpkg).
+실시간 통계 공유는 같은 스쿼드 안에서 이 애드온을 사용하고 공유 기능을 켠 플레이어끼리만 동작합니다.
+길드워2 서버가 모든 플레이어의 치유량을 직접 알려주는 구조가 아니기 때문에, 애드온을 설치하지 않은
+플레이어의 치유량을 자동으로 볼 수는 없습니다.
+
+## 주의
+
+- 이 빌드는 비공식 한국어 빌드입니다.
+- 애드온 사용은 각자 책임하에 진행해야 합니다.
+- 번역 문제나 한국어 UI 개선 요청은 이 저장소의 Issues에 남겨 주세요.
+- 원본 애드온 자체의 기능 버그는 가능하면 원본 저장소도 함께 확인해 주세요.
+
+## 원본 및 라이선스
+
+원본 프로젝트:
+
+[Krappa322/arcdps_healing_stats](https://github.com/Krappa322/arcdps_healing_stats)
+
+이 프로젝트는 원본과 동일하게 MIT License를 따릅니다. 자세한 내용은 [LICENSE](./LICENSE)를 확인해 주세요.
+
+원본 프로젝트에서 사용하는 주요 서드파티 라이브러리:
+
+- arcdps-extension
+- Dear ImGui
+- GoogleTest
+- gRPC
+- JSON for Modern C++
+- Prometheus Client Library for Modern C++
+- Protocol Buffers
+- simpleini
+- spdlog
+
+각 라이브러리의 자세한 라이선스 정보는 원본 저장소와 각 라이브러리 문서를 확인해 주세요.
