@@ -40,13 +40,16 @@ README.md
 
 ### Install
 
-1. Install [ArcDPS](https://www.deltaconnected.com/arcdps/) first.
-2. Install `Healing_Stats.dll` the same way you normally install arcdps Healing Stats.
-3. Put `Healing_Stats.locale.ini` and the language INI files in:
+`Healing_Stats.dll` and the `.ini` files do not use the same placement rule.
+
+- `Healing_Stats.dll`: install it using the same location or method you normally use for arcdps Healing Stats.
+- `Healing_Stats.locale.ini` and `Healing_Stats.<language>.ini`: put only these localization `.ini` files in:
 
 ```text
 Guild Wars 2\addons\arcdps\
 ```
+
+The folder path above is only for the localization `.ini` files.
 
 ### Language Setting
 
@@ -152,13 +155,16 @@ README.md
 
 ### 설치
 
-1. [ArcDPS](https://www.deltaconnected.com/arcdps/)를 먼저 설치합니다.
-2. `Healing_Stats.dll`은 기존 arcdps Healing Stats를 설치하던 방식대로 설치합니다.
-3. `Healing_Stats.locale.ini`와 언어별 INI 파일을 아래 폴더에 넣습니다.
+`Healing_Stats.dll`과 `.ini` 파일은 설치 규칙이 다릅니다.
+
+- `Healing_Stats.dll`: 기존 arcdps Healing Stats DLL을 설치하던 위치나 방식대로 설치합니다.
+- `Healing_Stats.locale.ini`와 `Healing_Stats.<language>.ini`: 이 현지화 `.ini` 파일들만 아래 폴더에 넣습니다.
 
 ```text
 Guild Wars 2\addons\arcdps\
 ```
+
+위 폴더 경로는 현지화 `.ini` 파일용입니다. 이 문구 때문에 DLL을 그 폴더로 옮기라는 뜻이 아닙니다.
 
 ### 언어 설정
 
