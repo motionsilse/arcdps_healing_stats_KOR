@@ -168,6 +168,7 @@
     <ClCompile Include="src\EventSequencer.cpp" />
     <ClCompile Include="src\GUI.cpp" />
     <ClCompile Include="src\ImGuiEx.cpp" />
+    <ClCompile Include="src\Localization.cpp" />
     <ClCompile Include="src\Options.cpp" />
     <ClCompile Include="src\Log.cpp" />
     <ClCompile Include="src\PlayerStats.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="src\GUI.h" />
     <ClInclude Include="src\ImGuiEx.h" />
     <ClInclude Include="src\KeysDown.h" />
+    <ClInclude Include="src\Localization.h" />
     <ClInclude Include="src\Options.h" />
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\PlayerStats.h" />

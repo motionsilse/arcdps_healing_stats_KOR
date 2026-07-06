@@ -2,11 +2,13 @@
 
 #include "AddonVersion.h"
 #include "AggregatedStats.h"
+#include "Localization.h"
 #include "Log.h"
 
 #include "SimpleIni.h"
 
 #include <filesystem>
+#include <initializer_list>
 
 using nlohmann::detail::value_t;
 
@@ -98,78 +100,116 @@ DetailsWindowState::DetailsWindowState(const AggregatedStatsEntry& pEntry)
 {
 }
 
+template<size_t StringSize>
+static void SetLocalizedDefaultString(char (&pBuffer)[StringSize], const char* pKey, const char* pFallback)
+{
+	snprintf(pBuffer, StringSize, "%s", Localization::Get("default_windows", pKey, pFallback));
+}
+
+static void ApplyLocalizedDefaultWindowText(HealTableOptions& pOptions)
+{
+	SetLocalizedDefaultString(pOptions.Windows[0].Name, "0_name", "Totals");
+	SetLocalizedDefaultString(pOptions.Windows[0].TitleFormat, "0_title_format", "Totals ({1}s in combat)");
+	SetLocalizedDefaultString(pOptions.Windows[0].EntryFormat, "0_entry_format", "{1} ({4}/s)");
+
+	SetLocalizedDefaultString(pOptions.Windows[1].Name, "1_name", "Targets");
+	SetLocalizedDefaultString(pOptions.Windows[1].TitleFormat, "1_title_format", "Targets {1} ({4}/s, {7}s in combat)");
+
+	SetLocalizedDefaultString(pOptions.Windows[2].Name, "2_name", "Skills");
+	SetLocalizedDefaultString(pOptions.Windows[2].TitleFormat, "2_title_format", "Skills {1} ({4}/s, {7}s in combat)");
+
+	SetLocalizedDefaultString(pOptions.Windows[3].Name, "3_name", "Targets (hits)");
+	SetLocalizedDefaultString(pOptions.Windows[3].TitleFormat, "3_title_format", "Targets {1} ({5}/hit, {2} hits)");
+	SetLocalizedDefaultString(pOptions.Windows[3].EntryFormat, "3_entry_format", "{1} ({5}/hit, {2} hits)");
+	SetLocalizedDefaultString(pOptions.Windows[3].DetailsEntryFormat, "3_details_entry_format", "{1} ({5}/hit, {2} hits)");
+
+	SetLocalizedDefaultString(pOptions.Windows[4].Name, "4_name", "Skills (hits)");
+	SetLocalizedDefaultString(pOptions.Windows[4].TitleFormat, "4_title_format", "Skills {1} ({5}/hit, {2} hits)");
+	SetLocalizedDefaultString(pOptions.Windows[4].EntryFormat, "4_entry_format", "{1} ({5}/hit, {2} hits)");
+	SetLocalizedDefaultString(pOptions.Windows[4].DetailsEntryFormat, "4_details_entry_format", "{1} ({5}/hit, {2} hits)");
+
+	SetLocalizedDefaultString(pOptions.Windows[5].Name, "5_name", "Peers outgoing");
+	SetLocalizedDefaultString(pOptions.Windows[5].TitleFormat, "5_title_format", "Outgoing healing {1} ({4}/s, {7}s in combat)");
+
+	SetLocalizedDefaultString(pOptions.Windows[6].Name, "6_name", "Peers barrier generation");
+	SetLocalizedDefaultString(pOptions.Windows[6].TitleFormat, "6_title_format", "Barrier generation {1} ({4}/s, {7}s in combat)");
+
+	SetLocalizedDefaultString(pOptions.Windows[9].Name, "9_name", "Combined");
+	SetLocalizedDefaultString(pOptions.Windows[9].TitleFormat, "9_title_format", "Combined {1} ({4}/s, {7}s in combat)");
+}
+
 HealTableOptions::HealTableOptions()
 {
 	Windows[0].DataSourceChoice = DataSource::Totals;
-	snprintf(Windows[0].Name, sizeof(Windows[0].Name), "%s", "합계");
-	snprintf(Windows[0].TitleFormat, sizeof(Windows[0].TitleFormat), "%s", "합계 (전투 {1}초)");
-	snprintf(Windows[0].EntryFormat, sizeof(Windows[0].EntryFormat), "%s", "{1} ({4}/초)");
 
 	Windows[1].DataSourceChoice = DataSource::Agents;
-	snprintf(Windows[1].Name, sizeof(Windows[1].Name), "%s", "대상별");
-	snprintf(Windows[1].TitleFormat, sizeof(Windows[1].TitleFormat), "%s", "대상별 {1} ({4}/초, 전투 {7}초)");
 
 	Windows[2].DataSourceChoice = DataSource::Skills;
-	snprintf(Windows[2].Name, sizeof(Windows[2].Name), "%s", "스킬별");
-	snprintf(Windows[2].TitleFormat, sizeof(Windows[2].TitleFormat), "%s", "스킬별 {1} ({4}/초, 전투 {7}초)");
 
 	Windows[3].DataSourceChoice = DataSource::Agents;
-	snprintf(Windows[3].Name, sizeof(Windows[3].Name), "%s", "대상별 (틱)");
-	snprintf(Windows[3].TitleFormat, sizeof(Windows[3].TitleFormat), "%s", "대상별 {1} ({5}/틱, {2}틱)");
-	snprintf(Windows[3].EntryFormat, sizeof(Windows[3].EntryFormat), "%s", "{1} ({5}/틱, {2}틱)");
-	snprintf(Windows[3].DetailsEntryFormat, sizeof(Windows[3].DetailsEntryFormat), "%s", "{1} ({5}/틱, {2}틱)");
 
 	Windows[4].DataSourceChoice = DataSource::Skills;
-	snprintf(Windows[4].Name, sizeof(Windows[4].Name), "%s", "스킬별 (틱)");
-	snprintf(Windows[4].TitleFormat, sizeof(Windows[4].TitleFormat), "%s", "스킬별 {1} ({5}/틱, {2}틱)");
-	snprintf(Windows[4].EntryFormat, sizeof(Windows[4].EntryFormat), "%s", "{1} ({5}/틱, {2}틱)");
-	snprintf(Windows[4].DetailsEntryFormat, sizeof(Windows[4].DetailsEntryFormat), "%s", "{1} ({5}/틱, {2}틱)");
 
 	Windows[5].DataSourceChoice = DataSource::PeersOutgoing;
-	snprintf(Windows[5].Name, sizeof(Windows[5].Name), "%s", "스쿼드원별 치유량");
-	snprintf(Windows[5].TitleFormat, sizeof(Windows[5].TitleFormat), "%s", "치유량 {1} ({4}/초, 전투 {7}초)");
 
 	Windows[6].DataSourceChoice = DataSource::PeersOutgoing;
 	Windows[6].ExcludeHealing = true;
 	Windows[6].ExcludeBarrierGeneration = false;
-	snprintf(Windows[6].Name, sizeof(Windows[6].Name), "%s", "스쿼드원별 배리어량");
-	snprintf(Windows[6].TitleFormat, sizeof(Windows[6].TitleFormat), "%s", "배리어량 {1} ({4}/초, 전투 {7}초)");
 
 	Windows[9].DataSourceChoice = DataSource::Combined;
-	snprintf(Windows[9].Name, sizeof(Windows[9].Name), "%s", "통합 보기");
-	snprintf(Windows[9].TitleFormat, sizeof(Windows[9].TitleFormat), "%s", "통합 보기 {1} ({4}/초, 전투 {7}초)");
+
+	ApplyLocalizedDefaultWindowText(*this);
 }
 
-static bool ReplaceSavedDefaultWindowName(HealWindowContext& pWindow, const char* pOldName, const char* pNewName)
+template<size_t StringSize>
+static bool ReplaceSavedDefaultString(char (&pBuffer)[StringSize], const char* pNewValue, std::initializer_list<const char*> pOldValues)
 {
-	if (strcmp(pWindow.Name, pOldName) != 0)
+	for (const char* oldValue : pOldValues)
 	{
-		return false;
+		if (strcmp(pBuffer, oldValue) == 0)
+		{
+			snprintf(pBuffer, StringSize, "%s", pNewValue);
+			return true;
+		}
 	}
 
-	snprintf(pWindow.Name, sizeof(pWindow.Name), "%s", pNewName);
-	return true;
+	return false;
 }
 
-static bool MigrateDefaultKoreanWindowNames(HealTableOptions& pOptions)
+static bool MigrateDefaultWindowText(HealTableOptions& pOptions)
 {
 	bool changed = false;
 
-	if (pOptions.Windows[5].DataSourceChoice == DataSource::PeersOutgoing &&
-		pOptions.Windows[5].ExcludeHealing == false &&
-		pOptions.Windows[5].ExcludeBarrierGeneration == true)
-	{
-		changed |= ReplaceSavedDefaultWindowName(pOptions.Windows[5], "Peers outgoing", "스쿼드원별 치유량");
-		changed |= ReplaceSavedDefaultWindowName(pOptions.Windows[5], "스쿼드원별", "스쿼드원별 치유량");
-	}
+	HealTableOptions defaults;
 
-	if (pOptions.Windows[6].DataSourceChoice == DataSource::PeersOutgoing &&
-		pOptions.Windows[6].ExcludeHealing == true &&
-		pOptions.Windows[6].ExcludeBarrierGeneration == false)
-	{
-		changed |= ReplaceSavedDefaultWindowName(pOptions.Windows[6], "Peers barrier generation", "스쿼드원별 배리어량");
-		changed |= ReplaceSavedDefaultWindowName(pOptions.Windows[6], "스쿼드원 배리어량", "스쿼드원별 배리어량");
-	}
+	changed |= ReplaceSavedDefaultString(pOptions.Windows[0].Name, defaults.Windows[0].Name, { "Totals", "합계" });
+	changed |= ReplaceSavedDefaultString(pOptions.Windows[0].TitleFormat, defaults.Windows[0].TitleFormat, { "Totals ({1}s in combat)", "합계 (전투 {1}초)" });
+	changed |= ReplaceSavedDefaultString(pOptions.Windows[0].EntryFormat, defaults.Windows[0].EntryFormat, { "{1} ({4}/s)", "{1} ({4}/초)" });
+
+	changed |= ReplaceSavedDefaultString(pOptions.Windows[1].Name, defaults.Windows[1].Name, { "Targets", "대상별" });
+	changed |= ReplaceSavedDefaultString(pOptions.Windows[1].TitleFormat, defaults.Windows[1].TitleFormat, { "Targets {1} ({4}/s, {7}s in combat)", "대상별 {1} ({4}/초, 전투 {7}초)" });
+
+	changed |= ReplaceSavedDefaultString(pOptions.Windows[2].Name, defaults.Windows[2].Name, { "Skills", "스킬별" });
+	changed |= ReplaceSavedDefaultString(pOptions.Windows[2].TitleFormat, defaults.Windows[2].TitleFormat, { "Skills {1} ({4}/s, {7}s in combat)", "스킬별 {1} ({4}/초, 전투 {7}초)" });
+
+	changed |= ReplaceSavedDefaultString(pOptions.Windows[3].Name, defaults.Windows[3].Name, { "Targets (hits)", "대상별 (틱)" });
+	changed |= ReplaceSavedDefaultString(pOptions.Windows[3].TitleFormat, defaults.Windows[3].TitleFormat, { "Targets {1} ({5}/hit, {2} hits)", "대상별 {1} ({5}/틱, {2}틱)" });
+	changed |= ReplaceSavedDefaultString(pOptions.Windows[3].EntryFormat, defaults.Windows[3].EntryFormat, { "{1} ({5}/hit, {2} hits)", "{1} ({5}/틱, {2}틱)" });
+	changed |= ReplaceSavedDefaultString(pOptions.Windows[3].DetailsEntryFormat, defaults.Windows[3].DetailsEntryFormat, { "{1} ({5}/hit, {2} hits)", "{1} ({5}/틱, {2}틱)" });
+
+	changed |= ReplaceSavedDefaultString(pOptions.Windows[4].Name, defaults.Windows[4].Name, { "Skills (hits)", "스킬별 (틱)" });
+	changed |= ReplaceSavedDefaultString(pOptions.Windows[4].TitleFormat, defaults.Windows[4].TitleFormat, { "Skills {1} ({5}/hit, {2} hits)", "스킬별 {1} ({5}/틱, {2}틱)" });
+	changed |= ReplaceSavedDefaultString(pOptions.Windows[4].EntryFormat, defaults.Windows[4].EntryFormat, { "{1} ({5}/hit, {2} hits)", "{1} ({5}/틱, {2}틱)" });
+	changed |= ReplaceSavedDefaultString(pOptions.Windows[4].DetailsEntryFormat, defaults.Windows[4].DetailsEntryFormat, { "{1} ({5}/hit, {2} hits)", "{1} ({5}/틱, {2}틱)" });
+
+	changed |= ReplaceSavedDefaultString(pOptions.Windows[5].Name, defaults.Windows[5].Name, { "Peers outgoing", "스쿼드원별", "스쿼드원별 치유량" });
+	changed |= ReplaceSavedDefaultString(pOptions.Windows[5].TitleFormat, defaults.Windows[5].TitleFormat, { "Outgoing healing {1} ({4}/s, {7}s in combat)", "치유량 {1} ({4}/초, 전투 {7}초)" });
+
+	changed |= ReplaceSavedDefaultString(pOptions.Windows[6].Name, defaults.Windows[6].Name, { "Peers barrier generation", "스쿼드원 배리어량", "스쿼드원별 배리어량" });
+	changed |= ReplaceSavedDefaultString(pOptions.Windows[6].TitleFormat, defaults.Windows[6].TitleFormat, { "Barrier generation {1} ({4}/s, {7}s in combat)", "배리어량 {1} ({4}/초, 전투 {7}초)" });
+
+	changed |= ReplaceSavedDefaultString(pOptions.Windows[9].Name, defaults.Windows[9].Name, { "Combined", "통합 보기" });
+	changed |= ReplaceSavedDefaultString(pOptions.Windows[9].TitleFormat, defaults.Windows[9].TitleFormat, { "Combined {1} ({4}/s, {7}s in combat)", "통합 보기 {1} ({4}/초, 전투 {7}초)" });
 
 	return changed;
 }
@@ -187,7 +227,7 @@ void HealTableOptions::Load(const char* pConfigPath)
 		bool readIni = ReadIni(*this);
 		if (readIni == true)
 		{
-			MigrateDefaultKoreanWindowNames(*this);
+			MigrateDefaultWindowText(*this);
 			LogI("Successfully read from legacy ini. Saving json");
 			bool savedJson = Save(pConfigPath);
 			if (savedJson == true)
@@ -228,7 +268,7 @@ void HealTableOptions::Load(const char* pConfigPath)
 	{
 		nlohmann::json jsonObject = nlohmann::json::parse(buffer.data());
 		FromJson(jsonObject);
-		if (MigrateDefaultKoreanWindowNames(*this) == true)
+		if (MigrateDefaultWindowText(*this) == true)
 		{
 			Save(pConfigPath);
 		}

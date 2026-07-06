@@ -2,6 +2,7 @@
 #include "Exports.h"
 #include "GUI.h"
 #include "KeysDown.h"
+#include "Localization.h"
 #include "Log.h"
 #include "PlayerStats.h"
 #include "Utilities.h"
@@ -194,6 +195,7 @@ arcdps_exports* mod_init()
 		LogW("mod_init called twice");
 	}
 	GlobalObjects::IS_SHUTDOWN = false;
+	Localization::Load(GlobalObjects::SELF_HANDLE);
 
 	memset(&ARC_EXPORTS, 0, sizeof(arcdps_exports));
 	ARC_EXPORTS.sig = HEALING_STATS_ADDON_SIGNATURE;

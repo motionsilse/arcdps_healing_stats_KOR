@@ -8,23 +8,32 @@
 
 ## 다운로드
 
-최신 DLL은 [Releases](../../releases)에서 받을 수 있습니다.
+최신 파일은 [Releases](../../releases)에서 받을 수 있습니다.
 
 받을 파일:
 
 ```text
 Healing_Stats.dll
+Healing_Stats.ko.ini
 ```
 
 ## 설치
 
 1. [ArcDPS](https://www.deltaconnected.com/arcdps/)를 먼저 설치합니다.
-2. `Healing_Stats.dll`을 ArcDPS의 `d3d11.dll`이 있는 길드워2 폴더에 넣습니다.
-3. 길드워2를 실행한 뒤 arcdps 메뉴에서 `치유 통계` 창을 켭니다.
+2. `Healing_Stats.dll`을 사용하는 설치 방식에 맞게 넣습니다.
+3. `Healing_Stats.ko.ini`는 항상 아래 위치에 넣습니다.
+
+```text
+길드워2 설치 폴더\addons\arcdps\Healing_Stats.ko.ini
+```
+
+ini 파일이 없으면 애드온은 원본 영어 UI로 표시됩니다.
+
+4. 길드워2를 실행한 뒤 arcdps 메뉴에서 `치유 통계` 창을 켭니다.
 
 ## 한국어화 범위
 
-- UI 메뉴, 옵션, 도움말, 기본 창 이름을 한국어로 번역했습니다.
+- UI 메뉴, 옵션, 도움말, 기본 창 이름을 `Healing_Stats.ko.ini`로 한국어화했습니다.
 - 스킬명, 직업명, 전문화명 같은 길드워2 고유명사는 번역하지 않았습니다.
 - `Peers outgoing` 기본 창은 실제 표시 내용에 맞춰 `스쿼드원별 치유량`으로 표기했습니다.
 - 배리어 전용 기본 창은 `스쿼드원별 배리어량`으로 표기했습니다.

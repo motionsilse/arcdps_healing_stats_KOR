@@ -2,10 +2,16 @@
 
 #include "Exports.h"
 #include "ImGuiEx.h"
+#include "Localization.h"
 #include "Log.h"
 
 #include <shellapi.h>
 #include <cpr/cpr.h>
+
+static const char* L(const char* pKey, const char* pFallback)
+{
+	return Localization::Get("update", pKey, pFallback);
+}
 
 void UpdateChecker::Log(std::string&& pMessage)
 {
@@ -49,18 +55,18 @@ void Display_UpdateWindow()
 	{
 		bool shown = true;
 		if (ImGui::Begin(
-			"치유 통계 업데이트###HEALING_STATS_UPDATE",
+			L("window_title", "Healing Stats Update###HEALING_STATS_UPDATE"),
 			&shown,
 			ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize) == true)
 		{
 			const UpdateChecker::Version& currentVersion = *state->CurrentVersion;
 			const UpdateChecker::Version& newVersion = state->NewVersion;
 
-			ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "치유 통계 애드온 새 업데이트가 있습니다");
-			ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "현재 버전: %u.%urc%u", currentVersion[0], currentVersion[1], currentVersion[2]);
-			ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "새 버전: %u.%urc%u", newVersion[0], newVersion[1], newVersion[2]);
+			ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), L("available", "A new update for the healing stats addon is available"));
+			ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), L("current_version", "Current version: %u.%urc%u"), currentVersion[0], currentVersion[1], currentVersion[2]);
+			ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), L("new_version", "New version: %u.%urc%u"), newVersion[0], newVersion[1], newVersion[2]);
 
-			if (ImGui::Button("다운로드 페이지 열기") == true)
+			if (ImGui::Button(L("open_download_page", "Open download page")) == true)
 			{
 				ShellExecuteA(nullptr, nullptr, "https://github.com/motionsilse/arcdps_healing_stats_KOR/releases", nullptr, nullptr, SW_SHOW);
 			}
@@ -68,19 +74,19 @@ void Display_UpdateWindow()
 			switch (state->UpdateStatus)
 			{
 			case UpdateChecker::Status::UpdateAvailable:
-				if (ImGui::Button("자동 업데이트") == true)
+				if (ImGui::Button(L("update_automatically", "Update automatically")) == true)
 				{
 					GlobalObjects::UPDATE_CHECKER->PerformInstallOrUpdate(*state);
 				}
 				break;
 			case UpdateChecker::Status::UpdateInProgress:
-				ImGui::TextUnformatted("업데이트 중");
+				ImGui::TextUnformatted(L("update_in_progress", "Update in progress"));
 				break;
 			case UpdateChecker::Status::UpdateSuccessful:
-				ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "업데이트 완료. 적용하려면 Guild Wars 2를 다시 시작하세요");
+				ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), L("update_successful", "Update finished, restart Guild Wars 2 for the update to take effect"));
 				break;
 			case UpdateChecker::Status::UpdateError:
-				ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "업데이트 중 오류가 발생했습니다");
+				ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), L("update_error", "An error occured while updating"));
 				break;
 			default:
 				break;

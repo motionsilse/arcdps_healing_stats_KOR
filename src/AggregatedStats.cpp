@@ -1,5 +1,6 @@
 #include "AggregatedStats.h"
 
+#include "Localization.h"
 #include "Log.h"
 #include "Skills.h"
 #include "Utilities.h"
@@ -10,8 +11,23 @@
 #include <algorithm>
 #include <map>
 
-constexpr const char* GROUP_FILTER_STRING[] = { "파티", "스쿼드", "전체 (소환수 제외)", "전체 (소환수 포함)" };
-static_assert((sizeof(GROUP_FILTER_STRING) / sizeof(GROUP_FILTER_STRING[0])) == static_cast<size_t>(GroupFilter::Max), "Added group filter option without updating gui?");
+static const char* GetGroupFilterString(GroupFilter pGroupFilter)
+{
+	switch (pGroupFilter)
+	{
+	case GroupFilter::Group:
+		return Localization::Get("group_filter", "group", "Group");
+	case GroupFilter::Squad:
+		return Localization::Get("group_filter", "squad", "Squad");
+	case GroupFilter::AllExcludingMinions:
+		return Localization::Get("group_filter", "all_excluding_summons", "All (Excluding Summons)");
+	case GroupFilter::All:
+		return Localization::Get("group_filter", "all_including_summons", "All (Including Summons)");
+	default:
+		assert(false);
+		return "";
+	}
+}
 
 AggregatedStatsEntry::AggregatedStatsEntry(uint64_t pId, HealedAgent&& pAgent, float pTimeInCombat, uint64_t pHealing, uint64_t pHits, std::optional<uint64_t> pCasts, uint64_t pBarrierGeneration)
 	: Id{pId}
@@ -100,7 +116,7 @@ const AggregatedVector& AggregatedStats::GetGroupFilterTotals()
 	myGroupFilterTotals = std::make_unique<AggregatedVector>();
 	for (uint32_t i = 0; i < static_cast<uint32_t>(GroupFilter::Max); i++)
 	{
-		myGroupFilterTotals->Add(0, GROUP_FILTER_STRING[i], GetCombatTime(), 0, 0, std::nullopt, 0);
+		myGroupFilterTotals->Add(0, GetGroupFilterString(static_cast<GroupFilter>(i)), GetCombatTime(), 0, 0, std::nullopt, 0);
 	}
 
 	HealWindowOptions fakeOptions;
@@ -522,7 +538,7 @@ const AggregatedVector& AggregatedStats::GetSkills(std::optional<uintptr_t> pAge
 	// TODO: Can this be separated into indirect healing and barrier generation as separate entries? 
 	if (totalIndirectHealing != 0 || totalIndirectTicks != 0 || totalIndirectBarrierGeneration != 0)
 	{
-		std::string skillName("피해 기반 치유");
+		std::string skillName(Localization::Get("aggregates", "from_damage_dealt", "From Damage Dealt"));
 
 		entry->Add(IndirectHealingSkillId, HealedAgent{std::move(skillName)}, GetCombatTime(), totalIndirectHealing, totalIndirectTicks, std::nullopt, totalIndirectBarrierGeneration);
 	}
