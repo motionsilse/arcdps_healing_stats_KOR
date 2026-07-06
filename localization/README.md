@@ -1,41 +1,63 @@
-# Healing Stats Multilingual Pack / 다국어팩
+# arcdps Healing Stats Multilingual Pack
 
-Unofficial multilingual localization pack for Guild Wars 2 arcdps Healing Stats.
+## English
 
-길드워2 arcdps Healing Stats용 비공식 다국어 로컬라이징 팩입니다.
+This is an unofficial multilingual localization build of
+[Krappa322/arcdps_healing_stats](https://github.com/Krappa322/arcdps_healing_stats)
+for Guild Wars 2 arcdps.
 
-## Install / 설치
+It localizes the addon's UI, options, tooltips, and default window names. Skill
+names, profession names, and elite specialization names are kept in English for
+clarity and consistency with the game and logs.
 
-Place these files in:
+This is not an official build from the original author.
 
-아래 파일들을 다음 위치에 넣습니다.
+### Download
+
+Download the latest ZIP from [Releases](../../releases).
+
+The ZIP contains:
+
+```text
+Healing_Stats.dll
+Healing_Stats.locale.ini
+Healing_Stats.ko.ini
+Healing_Stats.de.ini
+Healing_Stats.es.ini
+Healing_Stats.fil.ini
+Healing_Stats.fr.ini
+Healing_Stats.id.ini
+Healing_Stats.ja.ini
+Healing_Stats.ms.ini
+Healing_Stats.pl.ini
+Healing_Stats.pt.ini
+Healing_Stats.ru.ini
+Healing_Stats.th.ini
+Healing_Stats.tr.ini
+Healing_Stats.vi.ini
+README.md
+```
+
+### Install
+
+1. Install [ArcDPS](https://www.deltaconnected.com/arcdps/) first.
+2. Install `Healing_Stats.dll` the same way you normally install arcdps Healing Stats.
+3. Put `Healing_Stats.locale.ini` and the language INI files in:
 
 ```text
 Guild Wars 2\addons\arcdps\
 ```
 
-Files:
+### Language Setting
 
-```text
-Healing_Stats.dll
-Healing_Stats.locale.ini
-Healing_Stats.<language>.ini
-```
-
-## Language Setting / 언어 설정
-
-Default is Korean:
-
-기본값은 한국어입니다.
+The default language is Korean:
 
 ```ini
 [localization]
 language=ko
 ```
 
-Edit this file to change language:
-
-언어를 바꾸려면 이 파일을 수정합니다.
+To change the language, edit:
 
 ```text
 Guild Wars 2\addons\arcdps\Healing_Stats.locale.ini
@@ -43,43 +65,160 @@ Guild Wars 2\addons\arcdps\Healing_Stats.locale.ini
 
 Supported language codes:
 
+```text
+ko  Korean
+en  English, built-in original UI
+de  German
+es  Spanish
+fil Filipino
+fr  French
+id  Indonesian
+ja  Japanese
+ms  Malay
+pl  Polish
+pt  Portuguese
+ru  Russian
+th  Thai
+tr  Turkish
+vi  Vietnamese
+```
+
+Use `language=en` to use the addon's original built-in English UI. No
+`Healing_Stats.en.ini` file is needed.
+
+If `Healing_Stats.locale.ini` is missing, the addon tries `Healing_Stats.ko.ini`
+for compatibility with the earlier Korean build. If no localization file is
+found, it falls back to English.
+
+### Translation Policy
+
+- Skill, profession, and elite specialization names are not translated.
+- The translations stay close to the original English meaning.
+- UI text is localized only where it helps target-language users understand the addon.
+- `Peers outgoing` means outgoing stats from other squad members through live stats sharing. It is not a Guild Wars 2 shared-healing combat mechanic.
+- `Hits` means healing or barrier event ticks in this addon context.
+- `From Damage Dealt` is an aggregate or pseudo entry, not a skill name.
+
+### Review Status
+
+The multilingual files were checked with public Guild Wars 2/MMORPG terminology
+sources and structural verification. They are conservative reviewed drafts, not
+official translations.
+
+### Original Project and License
+
+Original project:
+
+[Krappa322/arcdps_healing_stats](https://github.com/Krappa322/arcdps_healing_stats)
+
+This project follows the original MIT License. See [LICENSE](./LICENSE).
+
+## 한국어
+
+이 저장소는 Guild Wars 2 arcdps용
+[Krappa322/arcdps_healing_stats](https://github.com/Krappa322/arcdps_healing_stats)를
+기반으로 만든 비공식 다국어 현지화 빌드입니다.
+
+애드온의 UI, 옵션, 툴팁, 기본 창 이름을 현지화합니다. 스킬명, 직업명,
+엘리트 전문화명은 게임과 로그에서의 명확성과 일관성을 위해 영어로 유지합니다.
+
+원 제작자의 공식 빌드가 아닙니다.
+
+### 다운로드
+
+최신 ZIP 파일은 [Releases](../../releases)에서 받을 수 있습니다.
+
+ZIP 파일 구성:
+
+```text
+Healing_Stats.dll
+Healing_Stats.locale.ini
+Healing_Stats.ko.ini
+Healing_Stats.de.ini
+Healing_Stats.es.ini
+Healing_Stats.fil.ini
+Healing_Stats.fr.ini
+Healing_Stats.id.ini
+Healing_Stats.ja.ini
+Healing_Stats.ms.ini
+Healing_Stats.pl.ini
+Healing_Stats.pt.ini
+Healing_Stats.ru.ini
+Healing_Stats.th.ini
+Healing_Stats.tr.ini
+Healing_Stats.vi.ini
+README.md
+```
+
+### 설치
+
+1. [ArcDPS](https://www.deltaconnected.com/arcdps/)를 먼저 설치합니다.
+2. `Healing_Stats.dll`은 기존 arcdps Healing Stats를 설치하던 방식대로 설치합니다.
+3. `Healing_Stats.locale.ini`와 언어별 INI 파일을 아래 폴더에 넣습니다.
+
+```text
+Guild Wars 2\addons\arcdps\
+```
+
+### 언어 설정
+
+기본 언어는 한국어입니다.
+
+```ini
+[localization]
+language=ko
+```
+
+언어를 바꾸려면 아래 파일을 수정합니다.
+
+```text
+Guild Wars 2\addons\arcdps\Healing_Stats.locale.ini
+```
+
 지원 언어 코드:
 
 ```text
-ko  Korean / 한국어
-de  German / 독일어
-es  Spanish / 스페인어
-fil Filipino / 필리핀어
-fr  French / 프랑스어
-id  Indonesian / 인도네시아어
-ja  Japanese / 일본어
-ms  Malay / 말레이어
-pl  Polish / 폴란드어
-pt  Portuguese / 포르투갈어
-ru  Russian / 러시아어
-th  Thai / 태국어
-tr  Turkish / 터키어
-vi  Vietnamese / 베트남어
+ko  한국어
+en  영어, 애드온 내장 원문 UI
+de  독일어
+es  스페인어
+fil 필리핀어
+fr  프랑스어
+id  인도네시아어
+ja  일본어
+ms  말레이어
+pl  폴란드어
+pt  포르투갈어
+ru  러시아어
+th  태국어
+tr  튀르키예어
+vi  베트남어
 ```
 
-Set `language=en` to use the original built-in English UI. No
-`Healing_Stats.en.ini` file is needed.
-
 `language=en`으로 설정하면 애드온에 내장된 영어 원문 UI를 사용합니다.
-`Healing_Stats.en.ini` 파일은 필요 없습니다.
+`Healing_Stats.en.ini` 파일은 필요하지 않습니다.
 
-## Notes / 참고
+`Healing_Stats.locale.ini`가 없으면 기존 한국어판과의 호환성을 위해
+`Healing_Stats.ko.ini`를 먼저 찾습니다. 현지화 파일을 찾지 못하면 영어로 표시됩니다.
 
-- This is an unofficial localization build.
-- Skill, profession, and elite specialization names are kept in English.
-- Translations are conservative and stay close to the original English meaning.
-- `Peers outgoing` means outgoing stats from other squad members through live
-  stats sharing, not a shared-healing combat mechanic.
+### 번역 기준
 
-한국어:
+- 스킬명, 직업명, 엘리트 전문화명은 번역하지 않습니다.
+- 번역은 영어 원문의 의미를 최대한 해치지 않는 방향으로 유지합니다.
+- 대상 언어 사용자가 애드온을 이해하는 데 필요한 UI 문구만 현지화합니다.
+- `Peers outgoing`은 실시간 통계 공유를 통해 받은 다른 스쿼드원의 outgoing 통계를 뜻합니다. Guild Wars 2의 공유 치유 전투 메커니즘이 아닙니다.
+- `Hits`는 이 애드온 문맥에서 치유 또는 배리어 이벤트 틱을 뜻합니다.
+- `From Damage Dealt`는 집계용 또는 가상 항목이며 스킬명이 아닙니다.
 
-- 비공식 로컬라이징 빌드입니다.
-- 스킬명, 직업명, 전문화명은 영어 원문을 유지합니다.
-- 번역은 원문 의미를 최대한 유지하는 방향으로 작업했습니다.
-- `Peers outgoing`은 실시간 통계 공유로 받은 스쿼드원의 outgoing 통계이며,
-  공유 치유 같은 전투 메커니즘이 아닙니다.
+### 검수 상태
+
+다국어 파일은 공개 Guild Wars 2/MMORPG 용어 자료와 구조 검증을 기준으로 확인했습니다.
+공식 번역이 아니라 보수적으로 검수한 초안입니다.
+
+### 원본 프로젝트와 라이선스
+
+원본 프로젝트:
+
+[Krappa322/arcdps_healing_stats](https://github.com/Krappa322/arcdps_healing_stats)
+
+이 프로젝트는 원본과 같은 MIT License를 따릅니다. 자세한 내용은 [LICENSE](./LICENSE)를 확인하세요.
