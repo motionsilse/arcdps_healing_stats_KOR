@@ -114,6 +114,11 @@ Original project:
 
 This project follows the original MIT License. See [LICENSE](./LICENSE).
 
+### Related Project
+
+[Arcdps-Translations](https://github.com/motionsilse/Arcdps-Translations) is a
+multilingual pack for the main arcdps addon, including font files.
+
 ## 한국어
 
 이 저장소는 Guild Wars 2 arcdps용
@@ -224,3 +229,8 @@ vi  베트남어
 [Krappa322/arcdps_healing_stats](https://github.com/Krappa322/arcdps_healing_stats)
 
 이 프로젝트는 원본과 같은 MIT License를 따릅니다. 자세한 내용은 [LICENSE](./LICENSE)를 확인하세요.
+
+### 관련 프로젝트
+
+[Arcdps-Translations](https://github.com/motionsilse/Arcdps-Translations)는
+arcdps 다국어팩(폰트 포함)입니다.
