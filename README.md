@@ -96,6 +96,7 @@ found, it falls back to English.
 - Skill, profession, and elite specialization names are not translated.
 - The translations stay close to the original English meaning.
 - UI text is localized only where it helps target-language users understand the addon.
+- Chinese are intentionally not included in this release because existing community translations are already available.
 
 ### Review Status
 
@@ -210,6 +211,7 @@ vi  베트남어
 - 스킬명, 직업명, 엘리트 전문화명은 번역하지 않습니다.
 - 번역은 영어 원문의 의미를 최대한 해치지 않는 방향으로 유지합니다.
 - 대상 언어 사용자가 애드온을 이해하는 데 필요한 UI 문구만 현지화합니다.
+- 기존의 커뮤니티 번역이 이미 존재하므로, 이번 릴리스에는 중국어가 의도적으로 포함되지 않았습니다.
 
 ### 검수 상태
 
