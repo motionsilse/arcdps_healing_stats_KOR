@@ -5,6 +5,8 @@ build
 .xmake
 ~AutoRecover*
 *.ini
+!Healing_Stats.ko.ini
+!localization/**/*.ini
 *.mock
 *.log
 *.aps
