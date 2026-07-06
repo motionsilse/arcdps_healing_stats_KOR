@@ -91,7 +91,6 @@ is needed.
 
 - Skill, profession, and elite specialization names are kept in English.
 - Translations are conservative and stay close to the original English meaning.
-- `Peers outgoing` means outgoing stats from other squad members through live stats sharing. It is not a shared-healing combat mechanic.
 - This is an unofficial localization build and not an official build from the original author.
 
 ### Verification
@@ -190,7 +189,6 @@ vi  베트남어
 
 - 스킬명, 직업명, 엘리트 전문화명은 영어로 유지합니다.
 - 번역은 영어 원문의 의미를 최대한 해치지 않는 방향으로 유지했습니다.
-- `Peers outgoing`은 실시간 통계 공유를 통해 받은 다른 스쿼드원의 outgoing 통계입니다. 공유 치유 전투 메커니즘이 아닙니다.
 - 원 제작자의 공식 빌드가 아닌 비공식 현지화 빌드입니다.
 
 ### 검증

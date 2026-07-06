@@ -96,9 +96,6 @@ found, it falls back to English.
 - Skill, profession, and elite specialization names are not translated.
 - The translations stay close to the original English meaning.
 - UI text is localized only where it helps target-language users understand the addon.
-- `Peers outgoing` means outgoing stats from other squad members through live stats sharing. It is not a Guild Wars 2 shared-healing combat mechanic.
-- `Hits` means healing or barrier event ticks in this addon context.
-- `From Damage Dealt` is an aggregate or pseudo entry, not a skill name.
 
 ### Review Status
 
@@ -213,9 +210,6 @@ vi  베트남어
 - 스킬명, 직업명, 엘리트 전문화명은 번역하지 않습니다.
 - 번역은 영어 원문의 의미를 최대한 해치지 않는 방향으로 유지합니다.
 - 대상 언어 사용자가 애드온을 이해하는 데 필요한 UI 문구만 현지화합니다.
-- `Peers outgoing`은 실시간 통계 공유를 통해 받은 다른 스쿼드원의 outgoing 통계를 뜻합니다. Guild Wars 2의 공유 치유 전투 메커니즘이 아닙니다.
-- `Hits`는 이 애드온 문맥에서 치유 또는 배리어 이벤트 틱을 뜻합니다.
-- `From Damage Dealt`는 집계용 또는 가상 항목이며 스킬명이 아닙니다.
 
 ### 검수 상태
 
