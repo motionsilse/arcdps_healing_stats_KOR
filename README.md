@@ -49,8 +49,6 @@ README.md
 Guild Wars 2\addons\arcdps\
 ```
 
-The folder path above is only for the localization `.ini` files.
-
 ### Language Setting
 
 The default language is Korean:
@@ -163,8 +161,6 @@ README.md
 ```text
 Guild Wars 2\addons\arcdps\
 ```
-
-위 폴더 경로는 현지화 `.ini` 파일용입니다. 이 문구 때문에 DLL을 그 폴더로 옮기라는 뜻이 아닙니다.
 
 ### 언어 설정
 
